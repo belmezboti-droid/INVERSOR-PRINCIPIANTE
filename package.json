@@ -1,0 +1,32 @@
+{
+  "name": "cuaderno-del-inversor",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Plataforma educativa para aprender a invertir desde cero: niveles con tests, simulador, foro multiusuario, consultor IA y titulares en directo.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "check": "node scripts/check.js",
+    "audit": "npm audit --omit=dev"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.1.1",
+    "@fontsource/space-grotesk": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.8.1",
+    "compression": "^1.7.5",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "gsap": "^3.12.5",
+    "helmet": "^7.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "rss-parser": "^3.13.0"
+  },
+  "engines": {
+    "node": ">=18.18"
+  }
+}
