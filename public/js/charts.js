@@ -1,4 +1,4 @@
-/* Gráficos SVG propios del Cuaderno del Inversor.
+/* Gráficos SVG propios de NEXORA.
    Cada función recibe las etiquetas traducidas del idioma activo y devuelve
    { svg, legend } donde svg es una cadena y legend una lista opcional.
    Todas las etiquetas se escapan antes de insertarse. */

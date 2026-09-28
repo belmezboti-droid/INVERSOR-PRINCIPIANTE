@@ -1,6 +1,6 @@
 'use strict';
 /**
- * El Cuaderno del Inversor — servidor de producción
+ * NEXORA — servidor de producción
  * -------------------------------------------------
  * Sirve la web (carpeta /public) y la API desde el mismo origen:
  *   - Autenticación: registro, inicio y cierre de sesión (bcrypt + JWT en cookie httpOnly, SameSite=Strict)
@@ -393,7 +393,7 @@ app.delete('/api/replies/:replyId', requireAuth, writeLimiter, (req, res) => {
 const LANG_NAMES = { es: 'Spanish (Spain)', en: 'English', fr: 'French', de: 'German' };
 function aiSystemPrompt(lang) {
   return [
-    'You are the "AI Consultant" inside "El Cuaderno del Inversor", an educational website that teaches people to invest from zero.',
+    'You are the "AI Consultant" inside "NEXORA", an educational website that teaches people to invest from zero.',
     `Always answer in ${LANG_NAMES[lang]}, in a clear, friendly tone without unnecessary jargon; briefly explain any technical term you use.`,
     'Adapt the depth to a beginner unless the question clearly shows an advanced level; with advanced users, be precise and go deeper.',
     'Whenever you discuss an investment decision, product or strategy, ALWAYS present both arguments in favour and against (or the risks). Never give only one side.',
@@ -516,7 +516,7 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 });
 
 const server = app.listen(PORT, () => {
-  console.log(`El Cuaderno del Inversor en http://localhost:${PORT} (${IS_PROD ? 'producción' : 'desarrollo'})`);
+  console.log(`NEXORA en http://localhost:${PORT} (${IS_PROD ? 'producción' : 'desarrollo'})`);
   if (!ANTHROPIC_API_KEY) console.log('[ia] ANTHROPIC_API_KEY no configurada: el consultor IA mostrará que no está disponible.');
 });
 

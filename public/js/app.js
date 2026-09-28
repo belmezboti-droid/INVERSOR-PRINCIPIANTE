@@ -1,4 +1,4 @@
-/* El Cuaderno del Inversor — aplicación del navegador.
+/* NEXORA — aplicación del navegador.
    Reglas de seguridad de este archivo:
    - Todo texto que venga de usuarios o del servidor se pinta con textContent.
    - Solo se usa innerHTML con contenido propio (archivos de idioma y gráficos),

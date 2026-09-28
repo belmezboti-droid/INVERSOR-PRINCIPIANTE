@@ -3,7 +3,7 @@ window.LOCALES.de = {
   meta: { name: "Deutsch", short: "DE", htmlLang: "de", locale: "de-DE" },
 
   ui: {
-    brand: "Das Anlegerheft",
+    brand: "NEXORA",
     brandTag: "Investieren lernen – ganz von vorn",
     skip: "Zum Inhalt springen",
     nav: { label: "Hauptnavigation", learn: "Lernen", simulator: "Simulator", forum: "Forum", ai: "KI-Berater", resources: "Nachrichten", menu: "Menü öffnen", closeMenu: "Menü schließen" },
@@ -148,7 +148,7 @@ window.LOCALES.de = {
       sub: "Klare Erklärungen zu deinen Fragen rund ums Investieren. Du siehst immer Argumente dafür und dagegen.",
       panelTitle: "Unterhaltung",
       panelSub: "Frag in deinen eigenen Worten; der Berater passt sich deinem Niveau an.",
-      welcome: "Hallo! Ich bin der Berater des Anlegerhefts. Frag mich alles zum Investieren: Begriffe, Produkte, Strategien oder Fragen zu den Stufen. Ich nenne dir immer die Vor- und Nachteile, aber keine persönlichen Empfehlungen.",
+      welcome: "Hallo! Ich bin der Berater von NEXORA. Frag mich alles zum Investieren: Begriffe, Produkte, Strategien oder Fragen zu den Stufen. Ich nenne dir immer die Vor- und Nachteile, aber keine persönlichen Empfehlungen.",
       needLogin: "Melde dich an, um den KI-Berater zu nutzen. So verhindern wir Missbrauch des Dienstes.",
       placeholder: "Zum Beispiel: Was ist der Unterschied zwischen einem ETF und einem Indexfonds?",
       inputLabel: "Deine Frage an den Berater",

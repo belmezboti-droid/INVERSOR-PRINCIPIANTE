@@ -3,7 +3,7 @@ window.LOCALES.es = {
   meta: { name: "Español", short: "ES", htmlLang: "es", locale: "es-ES" },
 
   ui: {
-    brand: "El Cuaderno del Inversor",
+    brand: "NEXORA",
     brandTag: "Aprende a invertir desde cero",
     skip: "Saltar al contenido",
     nav: { label: "Navegación principal", learn: "Aprender", simulator: "Simulador", forum: "Foro", ai: "Consultor IA", resources: "Noticias", menu: "Abrir menú", closeMenu: "Cerrar menú" },
@@ -148,7 +148,7 @@ window.LOCALES.es = {
       sub: "Resuelve dudas sobre inversión con explicaciones claras. Siempre verás argumentos a favor y en contra.",
       panelTitle: "Conversación",
       panelSub: "Pregunta con tus propias palabras; se adapta a tu nivel.",
-      welcome: "¡Hola! Soy el consultor del Cuaderno. Pregúntame lo que quieras sobre inversión: conceptos, productos, estrategias o dudas de los niveles. Te daré siempre los pros y los contras, sin recomendaciones personalizadas.",
+      welcome: "¡Hola! Soy el consultor de NEXORA. Pregúntame lo que quieras sobre inversión: conceptos, productos, estrategias o dudas de los niveles. Te daré siempre los pros y los contras, sin recomendaciones personalizadas.",
       needLogin: "Inicia sesión para usar el consultor IA. Así evitamos abusos del servicio.",
       placeholder: "Por ejemplo: ¿qué diferencia hay entre un ETF y un fondo indexado?",
       inputLabel: "Tu pregunta para el consultor",

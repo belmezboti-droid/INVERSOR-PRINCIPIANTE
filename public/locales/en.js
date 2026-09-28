@@ -3,7 +3,7 @@ window.LOCALES.en = {
   meta: { name: "English", short: "EN", htmlLang: "en", locale: "en-GB" },
 
   ui: {
-    brand: "The Investor's Notebook",
+    brand: "NEXORA",
     brandTag: "Learn to invest from scratch",
     skip: "Skip to content",
     nav: { label: "Main navigation", learn: "Learn", simulator: "Simulator", forum: "Forum", ai: "AI Consultant", resources: "News", menu: "Open menu", closeMenu: "Close menu" },
@@ -148,7 +148,7 @@ window.LOCALES.en = {
       sub: "Get clear explanations to your investing questions. You'll always see arguments for and against.",
       panelTitle: "Conversation",
       panelSub: "Ask in your own words; it adapts to your level.",
-      welcome: "Hi! I'm the Notebook's consultant. Ask me anything about investing: concepts, products, strategies or questions about the levels. I'll always give you the pros and cons, with no personalised recommendations.",
+      welcome: "Hi! I'm the NEXORA consultant. Ask me anything about investing: concepts, products, strategies or questions about the levels. I'll always give you the pros and cons, with no personalised recommendations.",
       needLogin: "Log in to use the AI consultant. This helps us prevent misuse of the service.",
       placeholder: "For example: what's the difference between an ETF and an index fund?",
       inputLabel: "Your question for the consultant",

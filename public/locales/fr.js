@@ -3,7 +3,7 @@ window.LOCALES.fr = {
   meta: { name: "Français", short: "FR", htmlLang: "fr", locale: "fr-FR" },
 
   ui: {
-    brand: "Le Carnet de l'Investisseur",
+    brand: "NEXORA",
     brandTag: "Apprendre à investir en partant de zéro",
     skip: "Aller au contenu",
     nav: { label: "Navigation principale", learn: "Apprendre", simulator: "Simulateur", forum: "Forum", ai: "Conseiller IA", resources: "Actualités", menu: "Ouvrir le menu", closeMenu: "Fermer le menu" },
@@ -148,7 +148,7 @@ window.LOCALES.fr = {
       sub: "Obtenez des explications claires à vos questions sur l'investissement. Vous verrez toujours les arguments pour et contre.",
       panelTitle: "Conversation",
       panelSub: "Posez vos questions avec vos propres mots : les réponses s'adaptent à votre niveau.",
-      welcome: "Bonjour ! Je suis le conseiller du Carnet. Posez-moi toutes vos questions sur l'investissement : notions, produits, stratégies ou points des niveaux. Je vous donnerai toujours les avantages et les inconvénients, sans recommandation personnalisée.",
+      welcome: "Bonjour ! Je suis le conseiller de NEXORA. Posez-moi toutes vos questions sur l'investissement : notions, produits, stratégies ou points des niveaux. Je vous donnerai toujours les avantages et les inconvénients, sans recommandation personnalisée.",
       needLogin: "Connectez-vous pour utiliser le conseiller IA. Cela nous permet d'éviter les abus.",
       placeholder: "Par exemple : quelle différence entre un ETF et un fonds indiciel ?",
       inputLabel: "Votre question pour le conseiller",

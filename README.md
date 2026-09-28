@@ -1,4 +1,4 @@
-# El Cuaderno del Inversor · versión 2.0
+# NEXORA · versión 2.0
 
 Plataforma educativa para aprender a invertir desde cero. Incluye:
 
