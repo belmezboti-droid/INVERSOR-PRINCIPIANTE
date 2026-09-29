@@ -3,10 +3,10 @@ window.LOCALES.es = {
   meta: { name: "Español", short: "ES", htmlLang: "es", locale: "es-ES" },
 
   ui: {
-    brand: "NEXORA",
-    brandTag: "Aprende a invertir desde cero",
+    brand: "Monibas Capital",
+    brandTag: "Invierte con cabeza, no con corazonadas.",
     skip: "Saltar al contenido",
-    nav: { label: "Navegación principal", learn: "Aprender", simulator: "Simulador", forum: "Foro", ai: "Consultor IA", resources: "Noticias", menu: "Abrir menú", closeMenu: "Cerrar menú" },
+    nav: { label: "Navegación principal", learn: "Aprender", simulator: "Simuladores", forum: "Foro", ai: "Consultor IA", resources: "Noticias", menu: "Abrir menú", closeMenu: "Cerrar menú" },
     account: { login: "Iniciar sesión", logout: "Cerrar sesión", settings: "Ajustes" },
     common: { close: "Cerrar", cancel: "Cancelar", confirm: "Confirmar", retry: "Reintentar" },
 
@@ -45,7 +45,7 @@ window.LOCALES.es = {
     tools: {
       title: "Herramientas para practicar",
       sub: "Úsalas en cualquier momento, sin esperar a terminar la ruta.",
-      simulator: { h: "Simulador", p: "Descubre cuánto puede crecer tu ahorro con aportaciones periódicas y el paso del tiempo." },
+      simulator: { h: "Simuladores", p: "Interés compuesto, coste de las comisiones, tu cartera, tamaño de posición y el reto «¿sube o baja?»." },
       forum: { h: "Foro", p: "Pregunta, comparte tu experiencia y aprende de otras personas que también están empezando." },
       ai: { h: "Consultor IA", p: "Resuelve dudas concretas con explicaciones claras que siempre incluyen pros y contras." },
       resources: { h: "Noticias y fuentes", p: "Titulares económicos actualizados y las fuentes oficiales que conviene conocer." }
@@ -67,6 +67,8 @@ window.LOCALES.es = {
       prev: "Nivel anterior",
       next: "Siguiente nivel",
       nextLocked: "Siguiente nivel (bloqueado)",
+      swipeHint: "Desliza para ver el gráfico completo",
+      riskLabel: "Nivel de riesgo: {n} de 5",
       pagerLabel: "Navegación entre niveles",
       locked: {
         title: "Este nivel aún está bloqueado",
@@ -148,7 +150,7 @@ window.LOCALES.es = {
       sub: "Resuelve dudas sobre inversión con explicaciones claras. Siempre verás argumentos a favor y en contra.",
       panelTitle: "Conversación",
       panelSub: "Pregunta con tus propias palabras; se adapta a tu nivel.",
-      welcome: "¡Hola! Soy el consultor de NEXORA. Pregúntame lo que quieras sobre inversión: conceptos, productos, estrategias o dudas de los niveles. Te daré siempre los pros y los contras, sin recomendaciones personalizadas.",
+      welcome: "¡Hola! Soy el consultor de Monibas Capital. Pregúntame lo que quieras sobre inversión: conceptos, productos, estrategias o dudas de los niveles. Te daré siempre los pros y los contras, sin recomendaciones personalizadas.",
       needLogin: "Inicia sesión para usar el consultor IA. Así evitamos abusos del servicio.",
       placeholder: "Por ejemplo: ¿qué diferencia hay entre un ETF y un fondo indexado?",
       inputLabel: "Tu pregunta para el consultor",
@@ -188,6 +190,12 @@ window.LOCALES.es = {
       account: "Cuenta",
       loggedAs: "Sesión iniciada como {name}",
       syncNote: "Tu idioma y tu progreso se guardan en tu cuenta y se sincronizan entre dispositivos.",
+      deleteAccount: "Eliminar mi cuenta",
+      deleteTitle: "Eliminar tu cuenta",
+      deleteText: "Se borrarán tu cuenta, tu progreso y todos tus mensajes y respuestas del foro. Esta acción no se puede deshacer.",
+      deletePwd: "Escribe tu contraseña para confirmar",
+      deleteBtn: "Eliminar definitivamente",
+      deleted: "Tu cuenta se ha eliminado",
       guestNote: "Inicia sesión para guardar tu progreso y tu idioma en tu cuenta y usarlos en cualquier dispositivo."
     },
     auth: {
@@ -208,7 +216,174 @@ window.LOCALES.es = {
       welcome: "¡Hola, {name}!",
       loggedOut: "Has cerrado sesión"
     },
+    heroChart: {
+      "label": "Gráfico de velas interactivo de ejemplo",
+      "controls": "Opciones del gráfico",
+      "candles": "Velas",
+      "line": "Línea",
+      "ma": "Media móvil (10)",
+      "volume": "Volumen",
+      "levels": "Soporte y resistencia",
+      "hint": "Pasa el ratón o toca una vela para ver qué cuenta. Con el teclado, usa las flechas.",
+      "session": "Sesión {n}",
+      "change": "Variación",
+      "volumeLbl": "Volumen",
+      "aboveMa": "Cierra por encima de su media móvil: la tendencia de fondo es alcista.",
+      "belowMa": "Cierra por debajo de su media móvil: la tendencia de fondo es débil.",
+      "caveat": "Ningún patrón predice el futuro por sí solo: confírmalo siempre con el contexto.",
+      "note": "Datos ilustrativos: no corresponden a ningún valor real.",
+      "cta": "¿Crees que puedes adivinar la siguiente vela?",
+      "ctaBtn": "Haz el reto",
+      "patterns": {
+        "bigBull": {
+          "h": "Vela alcista fuerte",
+          "p": "Cuerpo largo y verde: los compradores dominaron toda la sesión. Si llega con volumen alto, gana credibilidad."
+        },
+        "bigBear": {
+          "h": "Vela bajista fuerte",
+          "p": "Cuerpo largo y rojo: los vendedores tomaron el control. Con volumen alto suele reflejar presión de venta real."
+        },
+        "bull": {
+          "h": "Vela alcista",
+          "p": "Cerró por encima de su apertura: ganaron los compradores, pero sin exceso."
+        },
+        "bear": {
+          "h": "Vela bajista",
+          "p": "Cerró por debajo de su apertura: ganaron los vendedores, pero sin exceso."
+        },
+        "doji": {
+          "h": "Doji",
+          "p": "Apertura y cierre casi iguales: indecisión. Tras un movimiento largo puede anticipar una pausa, aunque nunca es una garantía."
+        },
+        "hammer": {
+          "h": "Martillo",
+          "p": "Mecha inferior larga: el precio cayó y los compradores lo devolvieron arriba. Tras una bajada, se lee como un posible rechazo de los precios bajos."
+        },
+        "star": {
+          "h": "Estrella fugaz",
+          "p": "Mecha superior larga: el precio subió y los vendedores lo empujaron abajo. Tras una subida, puede señalar agotamiento."
+        }
+      }
+    },
+    lab: {
+      "title": "Simuladores",
+      "sub": "Practica con herramientas interactivas, sin dinero real y sin riesgo. Todas funcionan en tu dispositivo.",
+      "tabsLabel": "Simuladores disponibles",
+      "tabs": {
+        "compound": "Interés compuesto",
+        "challenge": "¿Sube o baja?",
+        "fees": "Comisiones",
+        "portfolio": "Tu cartera",
+        "position": "Tamaño de posición"
+      },
+      "practice": "Practica lo aprendido",
+      "practiceGo": "Abrir el simulador",
+      "challenge": {
+        "h": "Reto: ¿sube o baja?",
+        "p": "Mira el gráfico y apuesta por la dirección de las próximas 5 sesiones. ¿Tu intuición le gana al azar?",
+        "intro": "Verás 10 gráficos de velas. En cada uno, decide si dentro de 5 sesiones el precio estará más alto o más bajo que ahora.",
+        "start": "Empezar el reto",
+        "up": "Subirá",
+        "down": "Bajará",
+        "round": "Gráfico {n} de {total}",
+        "score": "Aciertos: {n}",
+        "now": "Ahora",
+        "rightUp": "¡Acertaste! Subió un {p}.",
+        "rightDown": "¡Acertaste! Bajó un {p}.",
+        "wrongUp": "Fallaste: subió un {p}.",
+        "wrongDown": "Fallaste: bajó un {p}.",
+        "next": "Siguiente gráfico",
+        "seeResult": "Ver el resultado",
+        "again": "Repetir el reto",
+        "doneTitle": "Resultado: {n} de {total} aciertos",
+        "verdictMid": "Es justo lo que cabría esperar lanzando una moneda al aire.",
+        "verdictHigh": "¡Buena racha! Pero ojo: acertar 8 o más de 10 por pura suerte le pasa a 1 de cada 18 personas.",
+        "verdictLow": "Mala racha… aunque tampoco significa nada: fallar 8 o más de 10 por puro azar le pasa a 1 de cada 18 personas.",
+        "reveal": "El truco: todos estos gráficos se han generado al azar. Aun así, seguramente viste tendencias, soportes o patrones.",
+        "lesson": "El cerebro busca patrones incluso donde no los hay. Por eso los inversores con criterio siguen un plan, no sus corazonadas.",
+        "chartLabel": "Gráfico del reto"
+      },
+      "fees": {
+        "h": "El coste de las comisiones",
+        "p": "Compara el mismo ahorro con una comisión baja y otra alta, y descubre cuánto se lleva la diferencia con los años.",
+        "initial": "Capital inicial",
+        "monthly": "Aportación mensual",
+        "years": "Años",
+        "gross": "Rentabilidad anual antes de comisiones",
+        "feeA": "Comisión anual del fondo A",
+        "feeB": "Comisión anual del fondo B",
+        "hintA": "Típica de un fondo indexado",
+        "hintB": "Típica de un fondo de gestión activa",
+        "finalA": "Valor final con A",
+        "finalB": "Valor final con B",
+        "diff": "Diferencia",
+        "summary": "Con el fondo B terminarías con {amount} menos: un {p} menos de patrimonio por pagar {d} puntos más al año.",
+        "legendA": "Fondo A",
+        "legendB": "Fondo B",
+        "chartLabel": "Evolución del patrimonio con cada comisión",
+        "note": "Cálculo con capitalización mensual; la comisión se descuenta de la rentabilidad cada mes. No incluye impuestos ni inflación."
+      },
+      "portfolio": {
+        "h": "Diseña tu cartera",
+        "p": "Reparte tu dinero entre activos y observa cómo cambian la rentabilidad esperada y el riesgo.",
+        "equity": "Acciones globales",
+        "bonds": "Bonos",
+        "cash": "Liquidez",
+        "gold": "Oro",
+        "autoHint": "Al mover un control, el resto se ajusta para sumar siempre el 100 %.",
+        "presetsLabel": "Carteras de ejemplo",
+        "presets": [
+          "Conservadora",
+          "Equilibrada",
+          "Dinámica",
+          "Todo en acciones"
+        ],
+        "expReturn": "Rentabilidad anual esperada",
+        "vol": "Oscilación típica (volatilidad)",
+        "badYear": "Un año malo (1 de cada 40, aprox.)",
+        "badYearNote": "Con 10.000 € invertidos, en un año así podrías quedarte con unos {amount}.",
+        "riskLevel": "Nivel de riesgo",
+        "riskNames": [
+          "Muy bajo",
+          "Bajo",
+          "Medio",
+          "Alto",
+          "Muy alto"
+        ],
+        "rangeLabel": "Resultados posibles en un año",
+        "rangeBad": "Año malo",
+        "rangeGood": "Año bueno",
+        "rangeExp": "Esperado",
+        "tails": "Ojo: en la realidad las caídas extremas son más frecuentes de lo que predice este modelo. En 2008, las acciones globales llegaron a caer cerca de un 40 % en un año.",
+        "assumptions": "Hipótesis ilustrativas a largo plazo (no son una previsión): acciones 7 % anual y 16 % de volatilidad; bonos 3 % y 6 %; liquidez 2 % y 1 %; oro 4 % y 15 %.",
+        "note": "No es una recomendación: la cartera adecuada depende de tu horizonte y de cuánto soportes ver caer tu dinero sin vender."
+      },
+      "position": {
+        "h": "Tamaño de posición",
+        "p": "La calculadora que usan los traders: cuántas acciones comprar para no arriesgar más de lo que has decidido.",
+        "capital": "Capital de la cuenta",
+        "risk": "Riesgo máximo por operación",
+        "entry": "Precio de entrada",
+        "stop": "Stop-loss",
+        "target": "Objetivo (take-profit)",
+        "shares": "Acciones a comprar",
+        "invest": "Importe de la posición",
+        "riskAmt": "Pérdida máxima si salta el stop",
+        "rr": "Relación beneficio/riesgo",
+        "rrVal": "1 : {n}",
+        "breakevenNote": "Con esta relación necesitas acertar al menos el {p} de tus operaciones para no perder dinero (sin contar comisiones).",
+        "ofCapital": "{p} de tu capital",
+        "errStop": "En una compra, el stop-loss debe estar por debajo del precio de entrada.",
+        "errTarget": "El objetivo debe estar por encima del precio de entrada.",
+        "warnSize": "La posición supera tu capital: solo sería posible con apalancamiento, que multiplica también las pérdidas.",
+        "warnRisk": "Arriesgar más del 2 % por operación es agresivo: muchos traders profesionales se limitan al 0,5–1 %.",
+        "note": "Ejemplo para compras (posiciones largas). El stop-loss no garantiza el precio de salida: si la cotización abre con un hueco, la pérdida puede ser mayor.",
+        "chartLabel": "Niveles de la operación"
+      }
+    },
     footer: {
+      explore: "Explorar",
+      rights: "Todos los derechos reservados.",
       disclaimer: "Contenido educativo, no asesoramiento financiero. Invertir conlleva riesgos, incluida la pérdida del capital. Rentabilidades pasadas no garantizan rentabilidades futuras.",
       sources: "Contenido elaborado a partir de guías de organismos supervisores y comunidades inversoras reconocidas. Última revisión: septiembre de 2026.",
       privacy: "Solo usamos una cookie técnica para mantener tu sesión. Sin publicidad ni rastreadores."
@@ -515,7 +690,7 @@ window.LOCALES.es = {
         ] },
         { t: "p", h: "Inmobiliario cotizado (REIT y socimi)", html: "Son empresas que poseen y gestionan inmuebles (oficinas, centros logísticos, viviendas en alquiler) y reparten gran parte de su beneficio como dividendo. Dan exposición al sector inmobiliario sin comprar un piso, pero sufren cuando suben los tipos de interés." },
         { t: "p", h: "Criptoactivos, con mucha cautela", html: "Son activos digitales muy volátiles y con un marco de protección al inversor más limitado que el de los productos tradicionales. Si decides invertir, que sea una parte pequeña de tu patrimonio y solo con dinero que puedas permitirte perder por completo." },
-        { t: "table", h: "Comparativa rápida", head: ["Vehículo", "Riesgo típico", "Esfuerzo", "Para quién"], rows: [
+        { t: "table", risk: [1, 2, 3, 4, 4, 5], h: "Comparativa rápida", head: ["Vehículo", "Riesgo típico", "Esfuerzo", "Para quién"], rows: [
           ["Depósitos y monetarios", "Muy bajo", "Mínimo", "Fondo de emergencia y corto plazo"],
           ["Bonos", "Bajo o medio", "Bajo", "Estabilizar una cartera"],
           ["Fondo indexado o ETF global", "Medio", "Bajo", "La base de casi cualquier cartera a largo plazo"],

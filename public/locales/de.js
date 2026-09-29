@@ -3,10 +3,10 @@ window.LOCALES.de = {
   meta: { name: "Deutsch", short: "DE", htmlLang: "de", locale: "de-DE" },
 
   ui: {
-    brand: "NEXORA",
-    brandTag: "Investieren lernen – ganz von vorn",
+    brand: "Monibas Capital",
+    brandTag: "Mit Köpfchen investieren, nicht aus dem Bauch.",
     skip: "Zum Inhalt springen",
-    nav: { label: "Hauptnavigation", learn: "Lernen", simulator: "Simulator", forum: "Forum", ai: "KI-Berater", resources: "Nachrichten", menu: "Menü öffnen", closeMenu: "Menü schließen" },
+    nav: { label: "Hauptnavigation", learn: "Lernen", simulator: "Simulatoren", forum: "Forum", ai: "KI-Berater", resources: "Nachrichten", menu: "Menü öffnen", closeMenu: "Menü schließen" },
     account: { login: "Anmelden", logout: "Abmelden", settings: "Einstellungen" },
     common: { close: "Schließen", cancel: "Abbrechen", confirm: "Bestätigen", retry: "Erneut versuchen" },
 
@@ -45,7 +45,7 @@ window.LOCALES.de = {
     tools: {
       title: "Werkzeuge zum Üben",
       sub: "Du kannst sie jederzeit nutzen, auch bevor du den Lernweg abgeschlossen hast.",
-      simulator: { h: "Simulator", p: "Sieh dir an, wie stark deine Ersparnisse mit regelmäßigen Einzahlungen und der Zeit wachsen könnten." },
+      simulator: { h: "Simulatoren", p: "Zinseszins, Kosten, dein Depot, Positionsgröße und die Challenge „steigt oder fällt?“." },
       forum: { h: "Forum", p: "Stell Fragen, teile deine Erfahrungen und lerne von anderen, die ebenfalls anfangen." },
       ai: { h: "KI-Berater", p: "Erhalte klare Antworten auf konkrete Fragen – immer mit Vor- und Nachteilen." },
       resources: { h: "Nachrichten und Quellen", p: "Aktuelle Finanzschlagzeilen und die offiziellen Quellen, die du kennen solltest." }
@@ -67,6 +67,8 @@ window.LOCALES.de = {
       prev: "Vorherige Stufe",
       next: "Nächste Stufe",
       nextLocked: "Nächste Stufe (gesperrt)",
+      swipeHint: "Wischen, um die ganze Grafik zu sehen",
+      riskLabel: "Risikostufe: {n} von 5",
       pagerLabel: "Navigation zwischen den Stufen",
       locked: {
         title: "Diese Stufe ist noch gesperrt",
@@ -148,7 +150,7 @@ window.LOCALES.de = {
       sub: "Klare Erklärungen zu deinen Fragen rund ums Investieren. Du siehst immer Argumente dafür und dagegen.",
       panelTitle: "Unterhaltung",
       panelSub: "Frag in deinen eigenen Worten; der Berater passt sich deinem Niveau an.",
-      welcome: "Hallo! Ich bin der Berater von NEXORA. Frag mich alles zum Investieren: Begriffe, Produkte, Strategien oder Fragen zu den Stufen. Ich nenne dir immer die Vor- und Nachteile, aber keine persönlichen Empfehlungen.",
+      welcome: "Hallo! Ich bin der Berater von Monibas Capital. Frag mich alles zum Investieren: Begriffe, Produkte, Strategien oder Fragen zu den Stufen. Ich nenne dir immer die Vor- und Nachteile, aber keine persönlichen Empfehlungen.",
       needLogin: "Melde dich an, um den KI-Berater zu nutzen. So verhindern wir Missbrauch des Dienstes.",
       placeholder: "Zum Beispiel: Was ist der Unterschied zwischen einem ETF und einem Indexfonds?",
       inputLabel: "Deine Frage an den Berater",
@@ -188,6 +190,12 @@ window.LOCALES.de = {
       account: "Konto",
       loggedAs: "Angemeldet als {name}",
       syncNote: "Deine Sprache und dein Fortschritt werden in deinem Konto gespeichert und zwischen Geräten synchronisiert.",
+      deleteAccount: "Mein Konto löschen",
+      deleteTitle: "Konto löschen",
+      deleteText: "Dein Konto, dein Fortschritt und alle deine Forenbeiträge und Antworten werden gelöscht. Das lässt sich nicht rückgängig machen.",
+      deletePwd: "Gib zur Bestätigung dein Passwort ein",
+      deleteBtn: "Endgültig löschen",
+      deleted: "Dein Konto wurde gelöscht",
       guestNote: "Melde dich an, um Fortschritt und Sprache in deinem Konto zu speichern und auf jedem Gerät zu nutzen."
     },
     auth: {
@@ -208,7 +216,174 @@ window.LOCALES.de = {
       welcome: "Hallo, {name}!",
       loggedOut: "Du hast dich abgemeldet"
     },
+    heroChart: {
+      "label": "Interaktiver Beispiel-Kerzenchart",
+      "controls": "Chart-Optionen",
+      "candles": "Kerzen",
+      "line": "Linie",
+      "ma": "Gleitender Durchschnitt (10)",
+      "volume": "Volumen",
+      "levels": "Unterstützung und Widerstand",
+      "hint": "Fahre mit der Maus über eine Kerze oder tippe darauf, um zu sehen, was sie aussagt. Per Tastatur geht es mit den Pfeiltasten.",
+      "session": "Handelstag {n}",
+      "change": "Veränderung",
+      "volumeLbl": "Volumen",
+      "aboveMa": "Schluss über dem gleitenden Durchschnitt: Der übergeordnete Trend zeigt nach oben.",
+      "belowMa": "Schluss unter dem gleitenden Durchschnitt: Der übergeordnete Trend ist schwach.",
+      "caveat": "Kein Muster sagt allein die Zukunft voraus: Prüfe immer den Zusammenhang.",
+      "note": "Beispieldaten: Sie gehören zu keinem echten Wertpapier.",
+      "cta": "Glaubst du, du kannst die nächste Kerze erraten?",
+      "ctaBtn": "Zur Challenge",
+      "patterns": {
+        "bigBull": {
+          "h": "Starke steigende Kerze",
+          "p": "Langer grüner Körper: Die Käufer haben den ganzen Tag dominiert. Kommt sie mit hohem Volumen, ist sie glaubwürdiger."
+        },
+        "bigBear": {
+          "h": "Starke fallende Kerze",
+          "p": "Langer roter Körper: Die Verkäufer haben übernommen. Mit hohem Volumen spiegelt sie meist echten Verkaufsdruck wider."
+        },
+        "bull": {
+          "h": "Steigende Kerze",
+          "p": "Schluss über der Eröffnung: Die Käufer haben gewonnen, aber nicht deutlich."
+        },
+        "bear": {
+          "h": "Fallende Kerze",
+          "p": "Schluss unter der Eröffnung: Die Verkäufer haben gewonnen, aber nicht deutlich."
+        },
+        "doji": {
+          "h": "Doji",
+          "p": "Eröffnung und Schluss fast gleich: Unentschlossenheit. Nach einer langen Bewegung kann er eine Pause andeuten, ist aber nie eine Garantie."
+        },
+        "hammer": {
+          "h": "Hammer",
+          "p": "Langer unterer Docht: Der Kurs fiel, und die Käufer haben ihn wieder nach oben gebracht. Nach einem Rückgang gilt er als mögliche Ablehnung tieferer Kurse."
+        },
+        "star": {
+          "h": "Sternschnuppe",
+          "p": "Langer oberer Docht: Der Kurs stieg, und die Verkäufer haben ihn wieder gedrückt. Nach einem Anstieg kann sie Erschöpfung signalisieren."
+        }
+      }
+    },
+    lab: {
+      "title": "Simulatoren",
+      "sub": "Übe mit interaktiven Werkzeugen, ohne echtes Geld und ohne Risiko. Alles läuft auf deinem Gerät.",
+      "tabsLabel": "Verfügbare Simulatoren",
+      "tabs": {
+        "compound": "Zinseszins",
+        "challenge": "Steigt oder fällt?",
+        "fees": "Kosten",
+        "portfolio": "Dein Depot",
+        "position": "Positionsgröße"
+      },
+      "practice": "Setz es in die Praxis um",
+      "practiceGo": "Simulator öffnen",
+      "challenge": {
+        "h": "Challenge: steigt oder fällt?",
+        "p": "Schau dir den Chart an und tippe auf die Richtung der nächsten 5 Handelstage. Schlägt dein Bauchgefühl den Zufall?",
+        "intro": "Du siehst 10 Kerzencharts. Entscheide jeweils, ob der Kurs in 5 Handelstagen höher oder tiefer als jetzt steht.",
+        "start": "Challenge starten",
+        "up": "Er steigt",
+        "down": "Er fällt",
+        "round": "Chart {n} von {total}",
+        "score": "Treffer: {n}",
+        "now": "Jetzt",
+        "rightUp": "Richtig! Er ist um {p} gestiegen.",
+        "rightDown": "Richtig! Er ist um {p} gefallen.",
+        "wrongUp": "Daneben: Er ist um {p} gestiegen.",
+        "wrongDown": "Daneben: Er ist um {p} gefallen.",
+        "next": "Nächster Chart",
+        "seeResult": "Ergebnis ansehen",
+        "again": "Challenge wiederholen",
+        "doneTitle": "Ergebnis: {n} von {total} Treffern",
+        "verdictMid": "Genau das würde man auch beim Münzwurf erwarten.",
+        "verdictHigh": "Gute Serie! Aber Vorsicht: 8 oder mehr von 10 Treffern aus purem Glück schafft etwa 1 von 18 Menschen.",
+        "verdictLow": "Pechsträhne … die aber auch nichts bedeutet: 8 oder mehr von 10 Fehlern aus purem Zufall passieren etwa 1 von 18 Menschen.",
+        "reveal": "Der Trick: Alle diese Charts wurden zufällig erzeugt. Trotzdem hast du wahrscheinlich Trends, Unterstützungen oder Muster gesehen.",
+        "lesson": "Das Gehirn sucht Muster, auch wo es keine gibt. Deshalb folgen besonnene Anleger einem Plan statt ihrem Bauchgefühl.",
+        "chartLabel": "Chart der Challenge"
+      },
+      "fees": {
+        "h": "Was Kosten wirklich kosten",
+        "p": "Vergleiche dieselbe Sparsumme mit niedrigen und hohen Kosten und sieh, wie viel der Unterschied über die Jahre ausmacht.",
+        "initial": "Startkapital",
+        "monthly": "Monatliche Sparrate",
+        "years": "Jahre",
+        "gross": "Jährliche Rendite vor Kosten",
+        "feeA": "Jährliche Kosten von Fonds A",
+        "feeB": "Jährliche Kosten von Fonds B",
+        "hintA": "Typisch für einen Indexfonds",
+        "hintB": "Typisch für einen aktiv gemanagten Fonds",
+        "finalA": "Endwert mit A",
+        "finalB": "Endwert mit B",
+        "diff": "Unterschied",
+        "summary": "Mit Fonds B hättest du am Ende {amount} weniger: {p} weniger Vermögen, weil du jährlich {d} Prozentpunkte mehr zahlst.",
+        "legendA": "Fonds A",
+        "legendB": "Fonds B",
+        "chartLabel": "Vermögensentwicklung je nach Kosten",
+        "note": "Berechnung mit monatlicher Verzinsung; die Kosten werden jeden Monat von der Rendite abgezogen. Ohne Steuern und Inflation."
+      },
+      "portfolio": {
+        "h": "Stell dein Depot zusammen",
+        "p": "Verteile dein Geld auf verschiedene Anlagen und sieh, wie sich erwartete Rendite und Risiko verändern.",
+        "equity": "Aktien weltweit",
+        "bonds": "Anleihen",
+        "cash": "Liquidität",
+        "gold": "Gold",
+        "autoHint": "Wenn du einen Regler bewegst, passen sich die anderen an, sodass die Summe immer 100 % ergibt.",
+        "presetsLabel": "Beispieldepots",
+        "presets": [
+          "Konservativ",
+          "Ausgewogen",
+          "Dynamisch",
+          "Nur Aktien"
+        ],
+        "expReturn": "Erwartete jährliche Rendite",
+        "vol": "Übliche Schwankung (Volatilität)",
+        "badYear": "Ein schlechtes Jahr (etwa 1 von 40)",
+        "badYearNote": "Mit 10.000 € Einsatz könnten dir in so einem Jahr etwa {amount} bleiben.",
+        "riskLevel": "Risikostufe",
+        "riskNames": [
+          "Sehr gering",
+          "Gering",
+          "Mittel",
+          "Hoch",
+          "Sehr hoch"
+        ],
+        "rangeLabel": "Mögliche Ergebnisse in einem Jahr",
+        "rangeBad": "Schlechtes Jahr",
+        "rangeGood": "Gutes Jahr",
+        "rangeExp": "Erwartet",
+        "tails": "Achtung: In der Realität kommen extreme Einbrüche häufiger vor, als dieses Modell annimmt. 2008 fielen Aktien weltweit innerhalb eines Jahres um rund 40 %.",
+        "assumptions": "Beispielhafte langfristige Annahmen (keine Prognose): Aktien 7 % pro Jahr bei 16 % Volatilität; Anleihen 3 % und 6 %; Liquidität 2 % und 1 %; Gold 4 % und 15 %.",
+        "note": "Das ist keine Empfehlung: Das passende Depot hängt von deinem Anlagehorizont ab und davon, wie viel Verlust du aushältst, ohne zu verkaufen."
+      },
+      "position": {
+        "h": "Positionsgröße",
+        "p": "Der Rechner, den Trader nutzen: wie viele Aktien du kaufen kannst, ohne mehr zu riskieren als geplant.",
+        "capital": "Kontokapital",
+        "risk": "Maximales Risiko pro Trade",
+        "entry": "Einstiegskurs",
+        "stop": "Stop-Loss",
+        "target": "Kursziel (Take-Profit)",
+        "shares": "Zu kaufende Aktien",
+        "invest": "Positionswert",
+        "riskAmt": "Maximaler Verlust bei ausgelöstem Stop",
+        "rr": "Chance-Risiko-Verhältnis",
+        "rrVal": "1 : {n}",
+        "breakevenNote": "Bei diesem Verhältnis musst du mindestens {p} deiner Trades gewinnen, um kein Geld zu verlieren (ohne Kosten).",
+        "ofCapital": "{p} deines Kapitals",
+        "errStop": "Bei einem Kauf muss der Stop-Loss unter dem Einstiegskurs liegen.",
+        "errTarget": "Das Kursziel muss über dem Einstiegskurs liegen.",
+        "warnSize": "Die Position übersteigt dein Kapital: Sie wäre nur mit Hebel möglich, und der vervielfacht auch die Verluste.",
+        "warnRisk": "Mehr als 2 % pro Trade zu riskieren ist aggressiv: Viele Profi-Trader beschränken sich auf 0,5–1 %.",
+        "note": "Beispiel für Käufe (Long-Positionen). Ein Stop-Loss garantiert keinen Ausstiegskurs: Eröffnet der Kurs mit einer Lücke, kann der Verlust größer sein.",
+        "chartLabel": "Niveaus des Trades"
+      }
+    },
     footer: {
+      explore: "Entdecken",
+      rights: "Alle Rechte vorbehalten.",
       disclaimer: "Bildungsinhalte, keine Finanzberatung. Investieren ist mit Risiken verbunden, einschließlich des Verlusts des eingesetzten Kapitals. Vergangene Wertentwicklungen sind keine Garantie für die Zukunft.",
       sources: "Inhalte auf Grundlage von Leitfäden der Finanzaufsichtsbehörden und bekannter Anlegergemeinschaften. Zuletzt überprüft: September 2026.",
       privacy: "Wir verwenden nur ein technisch notwendiges Cookie, um dich angemeldet zu halten. Keine Werbung, kein Tracking."
@@ -511,7 +686,7 @@ window.LOCALES.de = {
         ] },
         { t: "p", h: "Börsennotierte Immobilien (REITs)", html: "Das sind Unternehmen, die Immobilien besitzen und verwalten (Büros, Logistikzentren, Mietwohnungen) und einen Großteil ihres Gewinns als Dividende ausschütten. Sie bieten dir Zugang zum Immobilienmarkt, ohne eine Wohnung zu kaufen, leiden aber unter steigenden Zinsen." },
         { t: "p", h: "Kryptowerte – mit großer Vorsicht", html: "Das sind sehr volatile digitale Vermögenswerte mit geringerem Anlegerschutz als klassische Produkte. Wenn du dich dafür entscheidest, dann nur mit einem kleinen Teil deines Vermögens und nur mit Geld, dessen Totalverlust du verkraften kannst." },
-        { t: "table", h: "Schnellvergleich", head: ["Anlageform", "Typisches Risiko", "Aufwand", "Geeignet für"], rows: [
+        { t: "table", risk: [1, 2, 3, 4, 4, 5], h: "Schnellvergleich", head: ["Anlageform", "Typisches Risiko", "Aufwand", "Geeignet für"], rows: [
           ["Tagesgeld und Geldmarkt", "Sehr gering", "Minimal", "Notgroschen und kurze Fristen"],
           ["Anleihen", "Gering bis mittel", "Gering", "Stabilisierung des Depots"],
           ["Globaler Indexfonds oder ETF", "Mittel", "Gering", "Kern fast jedes langfristigen Depots"],

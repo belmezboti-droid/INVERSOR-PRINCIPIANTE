@@ -3,10 +3,10 @@ window.LOCALES.fr = {
   meta: { name: "Français", short: "FR", htmlLang: "fr", locale: "fr-FR" },
 
   ui: {
-    brand: "NEXORA",
-    brandTag: "Apprendre à investir en partant de zéro",
+    brand: "Monibas Capital",
+    brandTag: "Investissez avec la tête, pas à l'aveugle.",
     skip: "Aller au contenu",
-    nav: { label: "Navigation principale", learn: "Apprendre", simulator: "Simulateur", forum: "Forum", ai: "Conseiller IA", resources: "Actualités", menu: "Ouvrir le menu", closeMenu: "Fermer le menu" },
+    nav: { label: "Navigation principale", learn: "Apprendre", simulator: "Simulateurs", forum: "Forum", ai: "Conseiller IA", resources: "Actualités", menu: "Ouvrir le menu", closeMenu: "Fermer le menu" },
     account: { login: "Se connecter", logout: "Se déconnecter", settings: "Paramètres" },
     common: { close: "Fermer", cancel: "Annuler", confirm: "Confirmer", retry: "Réessayer" },
 
@@ -45,7 +45,7 @@ window.LOCALES.fr = {
     tools: {
       title: "Des outils pour s'entraîner",
       sub: "Utilisez-les à tout moment, sans attendre la fin du parcours.",
-      simulator: { h: "Simulateur", p: "Découvrez combien votre épargne peut croître grâce à des versements réguliers et au temps." },
+      simulator: { h: "Simulateurs", p: "Intérêts composés, coût des frais, votre portefeuille, taille de position et le défi « hausse ou baisse ? »." },
       forum: { h: "Forum", p: "Posez vos questions, partagez votre expérience et apprenez d'autres personnes qui débutent aussi." },
       ai: { h: "Conseiller IA", p: "Obtenez des réponses claires à vos questions, toujours avec les avantages et les inconvénients." },
       resources: { h: "Actualités et sources", p: "Des titres économiques à jour et les sources officielles à connaître." }
@@ -67,6 +67,8 @@ window.LOCALES.fr = {
       prev: "Niveau précédent",
       next: "Niveau suivant",
       nextLocked: "Niveau suivant (verrouillé)",
+      swipeHint: "Faites glisser pour voir tout le graphique",
+      riskLabel: "Niveau de risque : {n} sur 5",
       pagerLabel: "Navigation entre les niveaux",
       locked: {
         title: "Ce niveau est encore verrouillé",
@@ -148,7 +150,7 @@ window.LOCALES.fr = {
       sub: "Obtenez des explications claires à vos questions sur l'investissement. Vous verrez toujours les arguments pour et contre.",
       panelTitle: "Conversation",
       panelSub: "Posez vos questions avec vos propres mots : les réponses s'adaptent à votre niveau.",
-      welcome: "Bonjour ! Je suis le conseiller de NEXORA. Posez-moi toutes vos questions sur l'investissement : notions, produits, stratégies ou points des niveaux. Je vous donnerai toujours les avantages et les inconvénients, sans recommandation personnalisée.",
+      welcome: "Bonjour ! Je suis le conseiller de Monibas Capital. Posez-moi toutes vos questions sur l'investissement : notions, produits, stratégies ou points des niveaux. Je vous donnerai toujours les avantages et les inconvénients, sans recommandation personnalisée.",
       needLogin: "Connectez-vous pour utiliser le conseiller IA. Cela nous permet d'éviter les abus.",
       placeholder: "Par exemple : quelle différence entre un ETF et un fonds indiciel ?",
       inputLabel: "Votre question pour le conseiller",
@@ -188,6 +190,12 @@ window.LOCALES.fr = {
       account: "Compte",
       loggedAs: "Connecté en tant que {name}",
       syncNote: "Votre langue et votre progression sont enregistrées dans votre compte et synchronisées entre vos appareils.",
+      deleteAccount: "Supprimer mon compte",
+      deleteTitle: "Supprimer votre compte",
+      deleteText: "Votre compte, votre progression et tous vos messages et réponses du forum seront supprimés. Cette action est irréversible.",
+      deletePwd: "Saisissez votre mot de passe pour confirmer",
+      deleteBtn: "Supprimer définitivement",
+      deleted: "Votre compte a été supprimé",
       guestNote: "Connectez-vous pour enregistrer votre progression et votre langue dans votre compte et les retrouver sur tous vos appareils."
     },
     auth: {
@@ -208,7 +216,174 @@ window.LOCALES.fr = {
       welcome: "Bonjour, {name} !",
       loggedOut: "Vous êtes déconnecté"
     },
+    heroChart: {
+      "label": "Graphique en chandeliers interactif d'exemple",
+      "controls": "Options du graphique",
+      "candles": "Chandeliers",
+      "line": "Ligne",
+      "ma": "Moyenne mobile (10)",
+      "volume": "Volume",
+      "levels": "Support et résistance",
+      "hint": "Survolez ou touchez un chandelier pour voir ce qu'il raconte. Au clavier, utilisez les flèches.",
+      "session": "Séance {n}",
+      "change": "Variation",
+      "volumeLbl": "Volume",
+      "aboveMa": "Il clôture au-dessus de sa moyenne mobile : la tendance de fond est haussière.",
+      "belowMa": "Il clôture sous sa moyenne mobile : la tendance de fond est fragile.",
+      "caveat": "Aucune figure ne prédit l'avenir à elle seule : vérifiez toujours le contexte.",
+      "note": "Données illustratives : elles ne correspondent à aucun titre réel.",
+      "cta": "Vous pensez pouvoir deviner le prochain chandelier ?",
+      "ctaBtn": "Relevez le défi",
+      "patterns": {
+        "bigBull": {
+          "h": "Chandelier haussier fort",
+          "p": "Long corps vert : les acheteurs ont dominé toute la séance. S'il s'accompagne d'un volume élevé, il gagne en crédibilité."
+        },
+        "bigBear": {
+          "h": "Chandelier baissier fort",
+          "p": "Long corps rouge : les vendeurs ont pris le contrôle. Avec un volume élevé, il traduit souvent une vraie pression vendeuse."
+        },
+        "bull": {
+          "h": "Chandelier haussier",
+          "p": "Il a clôturé au-dessus de son ouverture : les acheteurs l'ont emporté, sans excès."
+        },
+        "bear": {
+          "h": "Chandelier baissier",
+          "p": "Il a clôturé sous son ouverture : les vendeurs l'ont emporté, sans excès."
+        },
+        "doji": {
+          "h": "Doji",
+          "p": "Ouverture et clôture presque identiques : indécision. Après un long mouvement, il peut annoncer une pause, sans jamais le garantir."
+        },
+        "hammer": {
+          "h": "Marteau",
+          "p": "Longue mèche basse : le cours a chuté puis les acheteurs l'ont fait remonter. Après une baisse, on y voit un possible rejet des prix bas."
+        },
+        "star": {
+          "h": "Étoile filante",
+          "p": "Longue mèche haute : le cours a monté puis les vendeurs l'ont fait redescendre. Après une hausse, elle peut signaler un essoufflement."
+        }
+      }
+    },
+    lab: {
+      "title": "Simulateurs",
+      "sub": "Entraînez-vous avec des outils interactifs, sans argent réel et sans risque. Tout fonctionne sur votre appareil.",
+      "tabsLabel": "Simulateurs disponibles",
+      "tabs": {
+        "compound": "Intérêts composés",
+        "challenge": "Hausse ou baisse ?",
+        "fees": "Frais",
+        "portfolio": "Votre portefeuille",
+        "position": "Taille de position"
+      },
+      "practice": "Mettez-le en pratique",
+      "practiceGo": "Ouvrir le simulateur",
+      "challenge": {
+        "h": "Défi : hausse ou baisse ?",
+        "p": "Observez le graphique et pariez sur la direction des 5 prochaines séances. Votre intuition bat-elle le hasard ?",
+        "intro": "Vous verrez 10 graphiques en chandeliers. Pour chacun, décidez si dans 5 séances le cours sera plus haut ou plus bas qu'aujourd'hui.",
+        "start": "Commencer le défi",
+        "up": "Il montera",
+        "down": "Il baissera",
+        "round": "Graphique {n} sur {total}",
+        "score": "Bonnes réponses : {n}",
+        "now": "Maintenant",
+        "rightUp": "Bien vu ! Il a monté de {p}.",
+        "rightDown": "Bien vu ! Il a baissé de {p}.",
+        "wrongUp": "Raté : il a monté de {p}.",
+        "wrongDown": "Raté : il a baissé de {p}.",
+        "next": "Graphique suivant",
+        "seeResult": "Voir le résultat",
+        "again": "Recommencer le défi",
+        "doneTitle": "Résultat : {n} bonnes réponses sur {total}",
+        "verdictMid": "C'est exactement ce que donnerait un pile ou face.",
+        "verdictHigh": "Belle série ! Mais attention : trouver 8 bonnes réponses ou plus sur 10 par pure chance arrive à 1 personne sur 18.",
+        "verdictLow": "Mauvaise série… qui ne veut rien dire non plus : se tromper 8 fois ou plus sur 10 par pur hasard arrive à 1 personne sur 18.",
+        "reveal": "L'astuce : tous ces graphiques ont été générés au hasard. Pourtant, vous y avez sans doute vu des tendances, des supports ou des figures.",
+        "lesson": "Le cerveau cherche des motifs même là où il n'y en a pas. C'est pourquoi les investisseurs avisés suivent un plan, pas leurs intuitions.",
+        "chartLabel": "Graphique du défi"
+      },
+      "fees": {
+        "h": "Le coût des frais",
+        "p": "Comparez la même épargne avec des frais bas et des frais élevés, et découvrez ce que la différence vous coûte au fil des ans.",
+        "initial": "Capital de départ",
+        "monthly": "Versement mensuel",
+        "years": "Années",
+        "gross": "Rendement annuel avant frais",
+        "feeA": "Frais annuels du fonds A",
+        "feeB": "Frais annuels du fonds B",
+        "hintA": "Typiques d'un fonds indiciel",
+        "hintB": "Typiques d'un fonds à gestion active",
+        "finalA": "Valeur finale avec A",
+        "finalB": "Valeur finale avec B",
+        "diff": "Différence",
+        "summary": "Avec le fonds B, vous finiriez avec {amount} de moins : un patrimoine inférieur de {p} pour {d} points de frais en plus par an.",
+        "legendA": "Fonds A",
+        "legendB": "Fonds B",
+        "chartLabel": "Évolution du patrimoine selon les frais",
+        "note": "Calcul avec capitalisation mensuelle ; les frais sont déduits du rendement chaque mois. Impôts et inflation non compris."
+      },
+      "portfolio": {
+        "h": "Composez votre portefeuille",
+        "p": "Répartissez votre argent entre plusieurs actifs et observez l'évolution du rendement attendu et du risque.",
+        "equity": "Actions mondiales",
+        "bonds": "Obligations",
+        "cash": "Liquidités",
+        "gold": "Or",
+        "autoHint": "Quand vous déplacez un curseur, les autres s'ajustent pour que le total fasse toujours 100 %.",
+        "presetsLabel": "Portefeuilles d'exemple",
+        "presets": [
+          "Prudent",
+          "Équilibré",
+          "Dynamique",
+          "100 % actions"
+        ],
+        "expReturn": "Rendement annuel attendu",
+        "vol": "Variation habituelle (volatilité)",
+        "badYear": "Une mauvaise année (environ 1 sur 40)",
+        "badYearNote": "Avec 10 000 € investis, lors d'une telle année il pourrait vous rester environ {amount}.",
+        "riskLevel": "Niveau de risque",
+        "riskNames": [
+          "Très faible",
+          "Faible",
+          "Moyen",
+          "Élevé",
+          "Très élevé"
+        ],
+        "rangeLabel": "Résultats possibles sur un an",
+        "rangeBad": "Mauvaise année",
+        "rangeGood": "Bonne année",
+        "rangeExp": "Attendu",
+        "tails": "Attention : dans la réalité, les chutes extrêmes sont plus fréquentes que ne le prévoit ce modèle. En 2008, les actions mondiales ont chuté d'environ 40 % en un an.",
+        "assumptions": "Hypothèses illustratives à long terme (pas une prévision) : actions 7 % par an et 16 % de volatilité ; obligations 3 % et 6 % ; liquidités 2 % et 1 % ; or 4 % et 15 %.",
+        "note": "Ce n'est pas une recommandation : le bon portefeuille dépend de votre horizon et de la baisse que vous pouvez supporter sans vendre."
+      },
+      "position": {
+        "h": "Taille de position",
+        "p": "Le calculateur qu'utilisent les traders : combien d'actions acheter pour ne jamais risquer plus que prévu.",
+        "capital": "Capital du compte",
+        "risk": "Risque maximal par opération",
+        "entry": "Prix d'entrée",
+        "stop": "Stop-loss",
+        "target": "Objectif (take-profit)",
+        "shares": "Actions à acheter",
+        "invest": "Montant de la position",
+        "riskAmt": "Perte maximale si le stop est touché",
+        "rr": "Ratio gain/risque",
+        "rrVal": "1 : {n}",
+        "breakevenNote": "Avec ce ratio, il vous faut au moins {p} d'opérations gagnantes pour ne pas perdre d'argent (hors frais).",
+        "ofCapital": "{p} de votre capital",
+        "errStop": "Pour un achat, le stop-loss doit être inférieur au prix d'entrée.",
+        "errTarget": "L'objectif doit être supérieur au prix d'entrée.",
+        "warnSize": "La position dépasse votre capital : elle ne serait possible qu'avec un effet de levier, qui multiplie aussi les pertes.",
+        "warnRisk": "Risquer plus de 2 % par opération est agressif : beaucoup de traders professionnels se limitent à 0,5–1 %.",
+        "note": "Exemple pour des achats (positions longues). Le stop-loss ne garantit pas le prix de sortie : en cas d'ouverture en gap, la perte peut être plus importante.",
+        "chartLabel": "Niveaux de l'opération"
+      }
+    },
     footer: {
+      explore: "Explorer",
+      rights: "Tous droits réservés.",
       disclaimer: "Contenu pédagogique, pas un conseil financier. Investir comporte des risques, y compris la perte du capital. Les performances passées ne préjugent pas des performances futures.",
       sources: "Contenu élaboré à partir des guides des autorités de contrôle et de communautés d'investisseurs reconnues. Dernière révision : septembre 2026.",
       privacy: "Nous n'utilisons qu'un cookie technique pour maintenir votre session. Ni publicité ni traceurs."
@@ -511,7 +686,7 @@ window.LOCALES.fr = {
         ] },
         { t: "p", h: "L'immobilier coté (SIIC et REIT)", html: "Ce sont des sociétés qui possèdent et gèrent des biens immobiliers (bureaux, entrepôts logistiques, logements locatifs) et distribuent une grande partie de leurs bénéfices sous forme de dividendes. Elles donnent accès à l'immobilier sans acheter d'appartement, mais souffrent quand les taux d'intérêt montent." },
         { t: "p", h: "Les crypto-actifs, avec beaucoup de prudence", html: "Ce sont des actifs numériques très volatils, avec une protection des investisseurs plus limitée que pour les produits traditionnels. Si vous décidez d'investir, que ce soit une petite part de votre patrimoine et uniquement avec de l'argent que vous pouvez vous permettre de perdre entièrement." },
-        { t: "table", h: "Comparatif rapide", head: ["Support", "Risque typique", "Effort", "Pour qui"], rows: [
+        { t: "table", risk: [1, 2, 3, 4, 4, 5], h: "Comparatif rapide", head: ["Support", "Risque typique", "Effort", "Pour qui"], rows: [
           ["Dépôts et monétaire", "Très faible", "Minimal", "Épargne de précaution et court terme"],
           ["Obligations", "Faible à moyen", "Faible", "Stabiliser un portefeuille"],
           ["Fonds indiciel ou ETF mondial", "Moyen", "Faible", "Le cœur de presque tout portefeuille à long terme"],

@@ -1,5 +1,11 @@
 node_modules
+npm-debug.log*
 .env
+.env.*
+!.env.example
 data
-*.db*
+*.db
+*.db-shm
+*.db-wal
 .git
+.DS_Store

@@ -1,4 +1,6 @@
-# NEXORA · versión 2.0
+# Monibas Capital · versión 2.0
+
+*Invierte con cabeza, no con corazonadas.*
 
 Plataforma educativa para aprender a invertir desde cero. Incluye:
 
@@ -21,6 +23,7 @@ public/
   css/styles.css     Diseño completo: temas claro/oscuro y adaptación a móvil
   js/app.js          Lógica de la aplicación
   js/charts.js       Gráficos SVG propios
+  js/interactive.js  Gráfico explorable de la portada y simuladores (reto «¿sube o baja?», comisiones, cartera, tamaño de posición)
   locales/*.js       Textos en es / en / fr / de (todo el contenido, no solo la interfaz)
 scripts/check.js     Comprobaciones automáticas antes de publicar
 .env.example         Plantilla de configuración
@@ -38,6 +41,8 @@ cp .env.example .env      # en Windows: copy .env.example .env
 npm run check             # comprueba traducciones, tests y sintaxis
 npm start
 ```
+
+Tras el primer `npm install` se crea `package-lock.json`: **guárdalo junto al proyecto** (y súbelo a GitHub). Fija las versiones exactas de las dependencias, y Docker y Render lo usarán con `npm ci` para instalar siempre lo mismo que has probado.
 
 Abre **http://localhost:4000**. La web y el servidor funcionan juntos, así que ya **no hace falta `npx serve`** ni configurar `API_BASE` como en la versión anterior.
 
@@ -67,7 +72,7 @@ Tus usuarios, contraseñas y mensajes se conservan: el esquema de la base de dat
 | `PORT` | Puerto (por defecto 4000) |
 | `JWT_SECRET` | **Obligatorio en producción**, mínimo 32 caracteres. Genera uno con `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"` |
 | `DATA_DIR` | Carpeta de la base de datos. En producción, un **disco persistente** |
-| `ADMIN_EMAILS` | Correos con permiso para borrar cualquier mensaje del foro (separados por comas) |
+| `AI_DAILY_LIMIT` | Tope global de consultas al consultor IA por día (por defecto 500; `0` = sin tope). Protege tu factura aunque alguien cree muchas cuentas |
 | `ANTHROPIC_API_KEY` / `ANTHROPIC_MODEL` | Consultor IA (modelo por defecto: `claude-sonnet-5`) |
 | `NEWS_FEEDS` | Feeds RSS de los titulares (separados por comas) |
 | `TRUST_PROXY` | Número de proxies por delante (Render, Railway o nginx: `1`) |
@@ -85,7 +90,7 @@ SQLite guarda los datos en un archivo, así que el servidor necesita un **disco 
 2. En Render, elige *New → Blueprint* y selecciona el repositorio. Se usará `render.yaml`, que:
    - crea un plan con disco persistente en `/var/data`;
    - genera `JWT_SECRET` automáticamente.
-3. En *Environment*, añade `ANTHROPIC_API_KEY` y `ADMIN_EMAILS`.
+3. En *Environment*, añade `ANTHROPIC_API_KEY`. Para ser moderador, regístrate en la web y ejecuta en la consola (*Shell*) de Render: `npm run make-admin -- tu@correo.com`.
 4. Render te da un dominio con HTTPS. También puedes añadir el tuyo.
 
 ### Opción B · Railway
@@ -126,7 +131,13 @@ Ejecuta `npm start` con un gestor de procesos (`pm2` o systemd) y pon nginx dela
 | Fuerza bruta y abuso | Sin límites | Límites de peticiones: global, inicio de sesión y registro (20 cada 15 min), escritura (12 por minuto) e IA |
 | Validación | Básica | Usuario, correo, longitudes, temas, identificadores y progreso validados en el servidor. Se eliminan caracteres de control. Cuerpo máximo de 32 KB |
 | SQL injection | Consultas preparadas | Se mantienen consultas preparadas en todas las operaciones |
-| Autorización | — | Solo el autor o un administrador (`ADMIN_EMAILS`) pueden borrar mensajes. Los permisos se comprueban en el servidor, no solo en la interfaz |
+| Autorización | Administradores por correo en `ADMIN_EMAILS`: como el registro no verifica el correo, **cualquiera podía registrarse con ese correo y obtener permisos de moderación** | Los administradores se guardan en la base de datos y solo se nombran desde el servidor con `npm run make-admin -- correo`. Solo el autor o un administrador pueden borrar mensajes, y se comprueba en el servidor |
+| Suplantación | — | Nombres reservados (admin, moderador, soporte, Monibas…), normalización Unicode y eliminación de caracteres invisibles y de control de dirección (que permiten camuflar nombres o texto) |
+| Fuerza bruta distribuida | Solo límite por IP | Además, bloqueo de 15 min tras 10 intentos fallidos contra **la misma cuenta**, aunque vengan de muchas IP |
+| Coste de la IA | Límite por usuario | Además, tope global diario (`AI_DAILY_LIMIT`) |
+| RGPD | Sin forma de darse de baja | En *Ajustes → Eliminar mi cuenta* (con contraseña) se borran la cuenta, el progreso y todos sus mensajes |
+| Cachés | — | Ninguna respuesta de la API con datos de usuario se guarda en cachés intermedias (`Cache-Control: no-store`) |
+| Docker | Faltaba `.dockerignore`: la imagen podía incluir `.env` y la base de datos | `.dockerignore` excluye `.env`, `data/`, bases de datos y `node_modules` |
 | Errores | Podían mostrar detalles internos | La API solo devuelve códigos (`INVALID_CREDENTIALS`…), que la web traduce. Nunca envía trazas del servidor |
 | Secretos | — | En producción el servidor **se niega a arrancar** sin un `JWT_SECRET` válido |
 | Navegador | — | `localStorage` solo guarda idioma, tema, progreso y valores del simulador. Nada sensible |
@@ -140,9 +151,11 @@ Ejecuta `npm start` con un gestor de procesos (`pm2` o systemd) y pon nginx dela
 - [ ] `NODE_ENV=production` y un `JWT_SECRET` largo y aleatorio.
 - [ ] HTTPS activo.
 - [ ] Disco persistente configurado en `DATA_DIR`.
-- [ ] Tu correo en `ADMIN_EMAILS` para poder moderar el foro.
+- [ ] Regístrate en la web y hazte moderador con `npm run make-admin -- tu@correo.com`.
+- [ ] `package-lock.json` guardado en el proyecto.
 - [ ] Copias de seguridad periódicas de `data/foro.db`, por ejemplo con `sqlite3 data/foro.db ".backup copia.db"`.
-- [ ] Revisar las páginas legales que necesites al abrir el registro al público (aviso legal y política de privacidad según el RGPD): la web guarda nombre de usuario, correo y mensajes.
+- [ ] **Aviso legal y política de privacidad** (LSSI y RGPD): son obligatorios al abrir el registro al público en España, porque la web guarda nombre de usuario, correo y mensajes. Deben incluir quién es el responsable, con nombre y contacto, y no se pueden inventar: redáctalos con tus datos o con un servicio especializado.
+- [ ] Comprobar que la marca «Monibas Capital» está libre en la OEPM (España) y la EUIPO (UE) antes de invertir en ella.
 - [ ] Probar el registro, un test, el foro y el consultor en el dominio final, desde el móvil y el ordenador.
 
 ## 8. Mantenimiento
@@ -150,3 +163,8 @@ Ejecuta `npm start` con un gestor de procesos (`pm2` o systemd) y pon nginx dela
 - **Textos:** todo está en `public/locales/`. Si cambias un texto, cámbialo en los 4 idiomas; `npm run check` avisa si falta alguna clave o si no coinciden los marcadores `{n}`.
 - **Nuevas preguntas:** cada nivel necesita 8 preguntas con 4 opciones, y la respuesta correcta debe estar en la misma posición en todos los idiomas. El comprobador lo verifica.
 - **Dependencias:** ejecuta `npm outdated` y `npm audit` cada pocos meses.
+
+## 9. Límites conocidos (pendientes para una versión futura)
+
+- **No hay verificación de correo ni recuperación de contraseña**: ambas necesitan un servicio de envío de correos (por ejemplo, Postmark o Amazon SES).
+- **El bloqueo por cuenta tiene una contrapartida**: alguien que conozca tu correo puede bloquear tu acceso durante 15 minutos a base de intentos fallidos. Es el equilibrio habitual frente al robo de cuentas.

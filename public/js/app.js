@@ -1,4 +1,4 @@
-/* NEXORA — aplicación del navegador.
+/* Monibas Capital — aplicación del navegador.
    Reglas de seguridad de este archivo:
    - Todo texto que venga de usuarios o del servidor se pinta con textContent.
    - Solo se usa innerHTML con contenido propio (archivos de idioma y gráficos),
@@ -14,6 +14,10 @@
   var TOPIC_ICONS = { 'primeros-pasos': 'spark', 'acciones': 'chart', 'etfs-fondos': 'pie', 'materias-primas': 'factory', 'estrategia': 'compass' };
   var LEVEL_ICONS = ['shield', 'book', 'chart', 'basket', 'arrows', 'search', 'compass', 'globe'];
   var STAGE_OF = [0, 0, 0, 1, 1, 1, 2, 2];
+  var LAB_TABS = ['compound', 'challenge', 'fees', 'portfolio', 'position'];
+  var LAB_ICONS = { compound: 'calc', challenge: 'dice', fees: 'coins', portfolio: 'layers', position: 'ruler' };
+  // Simulador recomendado al terminar cada nivel (null = ninguno)
+  var LEVEL_TOOL = ['compound', 'fees', 'challenge', 'portfolio', 'position', null, 'portfolio', 'challenge'];
   var NS = 'http://www.w3.org/2000/svg';
   var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var FINE_POINTER = window.matchMedia('(pointer: fine)').matches;
@@ -61,7 +65,13 @@
     logout: 'M15 4h4v16h-4M10 16l4-4-4-4M14 12H3',
     refresh: 'M20 11a8 8 0 10-2.3 5.7M20 4v7h-7',
     target: 'M12 21a9 9 0 100-18 9 9 0 000 18zM12 16a4 4 0 100-8 4 4 0 000 8zM12 12h.01',
-    play: 'M8 5l11 7-11 7z'
+    play: 'M8 5l11 7-11 7z',
+    up: 'M12 19V5M6 11l6-6 6 6',
+    down: 'M12 5v14M6 13l6 6 6-6',
+    dice: 'M6 4h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2zM9 9h.01M15 15h.01M12 12h.01M15 9h.01M9 15h.01',
+    coins: 'M9 8c3.3 0 6-1.1 6-2.5S12.3 3 9 3 3 4.1 3 5.5 5.7 8 9 8zM3 5.5v4C3 10.9 5.7 12 9 12s6-1.1 6-2.5M3 9.5v4C3 14.9 5.7 16 9 16c1 0 2-.1 2.8-.3M15 13a6 6 0 100 8 4 4 0 000-8zM15 15v4',
+    layers: 'M12 3l9 5-9 5-9-5zM3 13l9 5 9-5M3 17l9 5 9-5',
+    ruler: 'M3 17L17 3l4 4L7 21zM7 13l2 2M10 10l2 2M13 7l2 2'
   };
 
   /* ------------------------------------------------------------ */
@@ -317,7 +327,8 @@
   function parseRoute() {
     var parts = location.hash.replace(/^#\/?/, '').split('/');
     if (parts[0] === 'level' && /^\d+$/.test(parts[1]) && Number(parts[1]) < LEVELS) return { name: 'level', id: Number(parts[1]) };
-    if (['simulator', 'forum', 'ai', 'resources'].indexOf(parts[0]) >= 0) return { name: parts[0] };
+    if (parts[0] === 'simulator') return { name: 'simulator', tab: LAB_TABS.indexOf(parts[1]) >= 0 ? parts[1] : 'compound' };
+    if (['forum', 'ai', 'resources'].indexOf(parts[0]) >= 0) return { name: parts[0] };
     return { name: 'home' };
   }
   function go(hash) { if (location.hash === hash) render(); else location.hash = hash; }
@@ -399,9 +410,19 @@
   }
   function renderFooter() {
     var f = $('#footer');
-    f.replaceChildren(el('div', { class: 'wrap grid' },
-      el('div', { class: 'warn' }, icon('alert'), el('p', { text: t('ui.footer.disclaimer') })),
-      el('div', null, el('p', { text: t('ui.footer.sources') }), el('p', { text: t('ui.footer.privacy') }))));
+    var links = el('ul', { class: 'foot-links' }, navItems().map(function (n) {
+      return el('li', null, el('a', { href: n.hash }, t('ui.nav.' + n.key)));
+    }));
+    f.replaceChildren(el('div', { class: 'wrap' },
+      el('div', { class: 'foot-top' },
+        el('div', { class: 'foot-brand' },
+          el('a', { class: 'brand', href: '#/' }, brandMark(), el('span', null, t('ui.brand'))),
+          el('p', { text: t('ui.brandTag') })),
+        el('nav', { class: 'foot-nav', 'aria-label': t('ui.footer.explore') }, el('h2', { text: t('ui.footer.explore') }), links)),
+      el('div', { class: 'grid' },
+        el('div', { class: 'warn' }, icon('alert'), el('p', { text: t('ui.footer.disclaimer') })),
+        el('div', null, el('p', { text: t('ui.footer.sources') }), el('p', { text: t('ui.footer.privacy') }))),
+      el('p', { class: 'foot-legal', text: '© ' + new Date().getFullYear() + ' ' + t('ui.brand') + '. ' + t('ui.footer.rights') })));
   }
 
   /* ------------------------------------------------------------ */
@@ -419,7 +440,7 @@
     view.replaceChildren();
     var title;
     if (route.name === 'level') { renderLevel(view, route.id); title = LOC().levels[route.id].title; }
-    else if (route.name === 'simulator') { renderSimulator(view); title = t('ui.nav.simulator'); }
+    else if (route.name === 'simulator') { renderLab(view, route.tab); title = t('ui.lab.tabs.' + route.tab) + ' · ' + t('ui.nav.simulator'); }
     else if (route.name === 'forum') { renderForum(view); title = t('ui.nav.forum'); }
     else if (route.name === 'ai') { renderAI(view); title = t('ui.nav.ai'); }
     else if (route.name === 'resources') { renderResources(view); title = t('ui.nav.resources'); }
@@ -445,6 +466,7 @@
     var startHash = next === null ? '#/level/0' : '#/level/' + next;
 
     var left = el('div', null,
+      el('p', { class: 'hero-kicker' }, el('span', { class: 'hero-kicker-dot', 'aria-hidden': 'true' }), t('ui.brandTag')),
       el('h1', null, t('ui.hero.title'), el('span', { class: 'line2', text: t('ui.hero.titleLine2') })),
       el('p', { class: 'hero-lead', text: t('ui.hero.lead') }),
       el('div', { class: 'hero-actions' },
@@ -459,9 +481,8 @@
       left.appendChild(el('div', { class: 'resume-card' }, icon('trophy'),
         el('p', null, next === null ? t('ui.hero.allDone') : [t('ui.hero.resume') + ' ', el('b', { text: t('ui.route.levelN', { n: next }) + ': ' + LOC().levels[next].title })])));
     }
-    var art = el('div', { class: 'hero-art' },
-      el('div', { html: window.Charts.hero() }),
-      el('div', { class: 'art-caption' }, el('span', { text: t('ui.hero.artCaption') }), el('b', { text: t('ui.hero.artTag') })));
+    var art = el('div', { class: 'hero-art' });
+    window.Interactive.heroChart(art, { t: t, el: el, icon: icon, locale: locale });
     view.appendChild(el('section', { class: 'hero' }, el('div', { class: 'wrap' }, left, art)));
 
     var steps = t('ui.how.steps');
@@ -490,7 +511,8 @@
     view.appendChild(el('section', null, el('div', { class: 'wrap' },
       sectionHead(t('ui.tools.title'), t('ui.tools.sub')),
       el('div', { class: 'tools-grid' }, tools.map(function (k) {
-        return el('a', { class: 'tool-card', href: '#/' + k }, icon(toolIcons[k]), el('h3', { text: t('ui.tools.' + k + '.h') }), el('p', { text: t('ui.tools.' + k + '.p') }));
+        return el('a', { class: 'tool-card tool-' + k, href: '#/' + k }, el('span', { class: 'tool-icon' }, icon(toolIcons[k])),
+          el('h3', { text: t('ui.tools.' + k + '.h') }), el('p', { text: t('ui.tools.' + k + '.p') }), icon('right', 'tool-go'));
       })))));
 
     requestAnimationFrame(function () {
@@ -510,11 +532,12 @@
     if (done && state.progress.scores[i] !== undefined) meta.push(el('span', { text: t('ui.route.score', { n: state.progress.scores[i] }) }));
     var cls = 'level-card' + (done ? ' is-done' : '') + (!open ? ' is-locked' : '') + (isNext ? ' is-next' : '');
     return el('a', { class: cls, href: '#/level/' + i, 'aria-label': t('ui.route.levelN', { n: i }) + ': ' + lv.title + '. ' + status.textContent },
-      el('span', { class: 'lc-icon' }, icon(open ? LEVEL_ICONS[i] : 'lock')),
-      el('span', null,
+      el('span', { class: 'lc-icon' }, icon(LEVEL_ICONS[i]), open ? null : el('span', { class: 'lc-lock', 'aria-hidden': 'true' }, icon('lock'))),
+      el('span', { class: 'lc-text' },
         el('span', { class: 'lc-num', text: t('ui.route.levelN', { n: i }) }),
         el('h4', { text: lv.title }),
-        el('span', { class: 'lc-meta' }, meta)));
+        el('span', { class: 'lc-meta' }, meta)),
+      open ? icon('right', 'lc-go') : null);
   }
 
   /* ------------------------------------------------------------ */
@@ -556,6 +579,7 @@
       el('ol', null, lv.essentials.map(function (e) { return el('li', { text: e }); }))));
     var toc = [];
     lv.blocks.forEach(function (b, bi) { append(body, renderBlock(b, 'b' + i + '-' + bi, toc)); });
+    append(body, practiceCard(i));
     body.appendChild(renderQuiz(i));
     body.appendChild(levelPager(i));
 
@@ -608,7 +632,12 @@
         return [heading(b, id, toc), el('div', { class: 'table-wrap', tabindex: '0', role: 'region', 'aria-label': b.h || b.head.join(', ') },
           el('table', { class: 'data' },
             el('thead', null, el('tr', null, b.head.map(function (h) { return el('th', { scope: 'col', text: h }); }))),
-            el('tbody', null, b.rows.map(function (r) { return el('tr', null, r.map(function (c) { return el('td', { text: c }); })); }))))];
+            el('tbody', null, b.rows.map(function (r, ri) {
+              return el('tr', null, r.map(function (c, ci) {
+                if (b.risk && ci === 1) return el('td', null, riskMeter(b.risk[ri]), el('span', { text: c }));
+                return el('td', { text: c });
+              }));
+            }))))];
       case 'glossary':
         return el('div', { class: 'glossary' }, b.items.map(function (term) {
           var btn = el('button', { class: 'term', type: 'button', 'aria-pressed': 'false' },
@@ -632,6 +661,11 @@
         return null;
     }
   }
+  function riskMeter(n) {
+    var m = el('span', { class: 'risk-meter risk-' + n, role: 'img', 'aria-label': t('ui.level.riskLabel', { n: n }) });
+    for (var k = 1; k <= 5; k++) m.appendChild(el('i', { class: k <= n ? 'on' : null }));
+    return m;
+  }
   function chartFigure(b) {
     var fn = window.Charts[b.id];
     if (!fn) return null;
@@ -639,6 +673,7 @@
     var fig = el('figure', { class: 'figure' }, el('div', { class: 'figure-frame', html: res.svg }));
     if (res.legend) fig.appendChild(el('div', { class: 'legend' }, res.legend.map(function (l) { return el('span', null, el('i', { class: l.cls }), l.label); })));
     if (b.caption) fig.appendChild(el('figcaption', { html: b.caption }));
+    fig.insertBefore(el('p', { class: 'swipe-hint', 'aria-hidden': 'true' }, icon('arrows'), t('ui.level.swipeHint')), fig.firstChild);
     return fig;
   }
   function levelPager(i) {
@@ -664,16 +699,16 @@
     wrap.appendChild(el('div', { class: 'quiz-head' },
       el('div', null,
         el('h2', { id: 'quizTitle' }, icon('trophy'), t('ui.quiz.title', { n: i })),
-        el('p', { text: i === LEVELS - 1 ? t('ui.quiz.hintLast', { q: total, min: min }) : t('ui.quiz.hint', { q: total, min: min }) })),
-      el('div', { class: 'quiz-meter', 'aria-live': 'polite' }, answeredText, el('div', { class: 'bar' }, meterBar))));
+        el('p', { text: i === LEVELS - 1 ? t('ui.quiz.hintLast', { q: total, min: min }) : t('ui.quiz.hint', { q: total, min: min }) }))));
     if (isDone(i) && state.progress.scores[i] !== undefined) {
       wrap.appendChild(el('div', { class: 'callout' }, icon('check'), el('p', { text: t('ui.quiz.previous', { p: state.progress.scores[i] }) })));
     }
     var form = el('form', { novalidate: true });
+    form.appendChild(el('div', { class: 'quiz-meter', 'aria-live': 'polite' }, answeredText, el('div', { class: 'bar' }, meterBar)));
     var cards = qs.map(function (q, qi) {
       var name = 'q' + i + '-' + qi;
       var fs = el('fieldset', { class: 'q-card' },
-        el('legend', null, el('span', { class: 'qn', text: (qi + 1) + '.' }), el('span', { text: q.q })),
+        el('legend', null, el('span', { class: 'qn', text: String(qi + 1) }), el('span', { text: q.q })),
         el('div', { class: 'opts' }, q.o.map(function (opt, oi) {
           return el('label', { class: 'opt' }, el('input', { type: 'radio', name: name, value: String(oi) }), el('span', { text: opt }));
         })));
@@ -788,7 +823,13 @@
   /* ------------------------------------------------------------ */
   /* Simulador                                                     */
   /* ------------------------------------------------------------ */
-  var sim = store.get('ci.sim', { initial: 1000, monthly: 100, rate: 6, years: 20, real: false });
+  var sim = (function () {
+    // Valores guardados en el navegador: se acotan a los rangos de los controles por si se han manipulado
+    var d = { initial: 1000, monthly: 100, rate: 6, years: 20, real: false }, v = store.get('ci.sim', d) || d;
+    function clamp(x, min, max, def) { x = Number(x); return isFinite(x) ? Math.min(max, Math.max(min, x)) : def; }
+    return { initial: clamp(v.initial, 0, 100000, d.initial), monthly: clamp(v.monthly, 0, 3000, d.monthly),
+      rate: clamp(v.rate, 0, 12, d.rate), years: Math.round(clamp(v.years, 1, 45, d.years)), real: v.real === true };
+  })();
   function renderSimulator(view) {
     var outputs = {};
     function slider(key, min, max, step, fmt) {
@@ -808,7 +849,7 @@
     realInput.addEventListener('change', function () { sim.real = realInput.checked; update(); });
 
     var kContrib = el('strong'), kInterest = el('strong'), kFinal = el('strong');
-    var chartBox = el('div', { class: 'figure-frame' });
+    var chartBox = el('div', { class: 'figure-frame sim-chart' });
     var controls = el('div', { class: 'sim-controls' },
       slider('initial', 0, 100000, 500, money),
       slider('monthly', 0, 3000, 10, money),
@@ -827,9 +868,8 @@
       el('p', { class: 'sim-note', text: t('ui.sim.note') }),
       el('p', { class: 'sim-note' }, icon('shield'), ' ' + t('ui.sim.privacy')));
 
-    view.appendChild(el('section', null, el('div', { class: 'wrap' },
-      sectionHead(t('ui.sim.title'), t('ui.sim.sub')),
-      el('div', { class: 'panel' }, el('div', { class: 'sim-grid' }, controls, output)))));
+    view.appendChild(el('div', { class: 'tool-head' }, el('h2', { text: t('ui.sim.title') }), el('p', { text: t('ui.sim.sub') })));
+    view.appendChild(el('div', { class: 'panel' }, el('div', { class: 'sim-grid' }, controls, output)));
 
     function update() {
       Object.keys(outputs).forEach(function (k) { outputs[k].out.textContent = outputs[k].fmt(sim[k]); });
@@ -847,12 +887,46 @@
       kContrib.textContent = money(con);
       kInterest.textContent = money(fin - con);
       kFinal.textContent = money(fin);
+      lastSeries = [totals, contribs];
       drawSimChart(chartBox, totals, contribs);
     }
+    var lastSeries = null, resizeTimer = null;
+    function onResize() {
+      if (!chartBox.isConnected) { window.removeEventListener('resize', onResize); return; }
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () { if (lastSeries) drawSimChart(chartBox, lastSeries[0], lastSeries[1]); }, 120);
+    }
+    window.addEventListener('resize', onResize);
     update();
+    requestAnimationFrame(function () { if (lastSeries) drawSimChart(chartBox, lastSeries[0], lastSeries[1]); });
+  }
+  function renderLab(view, tab) {
+    var tabs = el('nav', { class: 'lab-tabs', 'aria-label': t('ui.lab.tabsLabel') }, LAB_TABS.map(function (k) {
+      return el('a', { href: '#/simulator' + (k === 'compound' ? '' : '/' + k), class: 'lab-tab', 'aria-current': k === tab ? 'page' : null },
+        icon(LAB_ICONS[k]), el('span', { text: t('ui.lab.tabs.' + k) }));
+    }));
+    var host = el('div', { class: 'lab-host' });
+    view.appendChild(el('section', null, el('div', { class: 'wrap' }, sectionHead(t('ui.lab.title'), t('ui.lab.sub')), tabs, host)));
+    var api = { t: t, el: el, icon: icon, locale: locale, money: money };
+    if (tab === 'compound') renderSimulator(host);
+    else window.Interactive[tab](host, api);
+    var cur = $('.lab-tab[aria-current="page"]');
+    if (cur && cur.scrollIntoView && !state.firstRender) cur.scrollIntoView({ block: 'nearest', inline: 'center' });
+  }
+  function practiceCard(i) {
+    var k = LEVEL_TOOL[i];
+    if (!k) return null;
+    var href = '#/simulator' + (k === 'compound' ? '' : '/' + k);
+    var h = k === 'compound' ? t('ui.sim.title') : t('ui.lab.' + k + '.h'), p = k === 'compound' ? t('ui.sim.sub') : t('ui.lab.' + k + '.p');
+    return el('a', { class: 'practice-card', href: href },
+      el('span', { class: 'practice-icon' }, icon(LAB_ICONS[k])),
+      el('span', { class: 'practice-text' }, el('small', { text: t('ui.lab.practice') }), el('b', { text: h }), el('span', { text: p })),
+      el('span', { class: 'practice-go' }, t('ui.lab.practiceGo'), icon('right')));
   }
   function drawSimChart(box, totals, contribs) {
-    var W = 640, H = 300, L = 86, R = 16, T = 16, B = 34;
+    var inner = box.clientWidth ? box.clientWidth - 36 : 640; // 36 = relleno horizontal del marco
+    var W = Math.max(280, Math.min(900, Math.round(inner))), H = W < 480 ? 240 : 300;
+    var L = W < 480 ? 64 : 86, R = 16, T = 16, B = 34;
     // Eje con valores redondos (1, 2, 2,5 o 5 × 10^k) para que las etiquetas sean cortas y legibles
     var peak = Math.max.apply(null, totals.concat([1]));
     var raw = peak / 4, mag = Math.pow(10, Math.floor(Math.log10(raw)));
@@ -900,7 +974,7 @@
       lines[0].textContent = t('ui.sim.tipYear', { n: i });
       lines[1].textContent = t('ui.sim.legendTotal') + ': ' + money(totals[i]);
       lines[2].textContent = t('ui.sim.legendContrib') + ': ' + money(contribs[i]);
-      var tx = x + 12 + 170 > W ? x - 182 : x + 12;
+      var tx = x + 12 + 170 > W ? Math.max(4, x - 182) : x + 12;
       tipG.setAttribute('transform', 'translate(' + tx + ',' + Math.max(T, Math.min(yv - 30, H - B - 62)) + ')');
       tipG.setAttribute('opacity', '1');
     }
@@ -1148,7 +1222,7 @@
       sectionHead(t('ui.res.title'), t('ui.res.sub')),
       newsPanel,
       el('div', { class: 'callout' }, icon('info'), el('p', { text: t('ui.res.tip') })),
-      el('div', { class: 'section-head' }, el('h2', { text: t('ui.res.sourcesTitle') })),
+      el('div', { class: 'section-head sources-head' }, el('h2', { text: t('ui.res.sourcesTitle') })),
       el('div', { class: 'source-groups' }, groups))));
 
     api('/news').then(function (data) {
@@ -1204,7 +1278,9 @@
         el('h3', { text: t('ui.settings.account') }),
         state.user
           ? [el('p', { text: t('ui.settings.loggedAs', { name: state.user.username }) }), el('p', { text: t('ui.settings.syncNote') }),
-            el('button', { class: 'btn btn-ghost btn-sm', type: 'button', onclick: logout }, icon('logout'), t('ui.account.logout'))]
+            el('div', { class: 'settings-actions' },
+              el('button', { class: 'btn btn-ghost btn-sm', type: 'button', onclick: logout }, icon('logout'), t('ui.account.logout')),
+              el('button', { class: 'link-btn danger', type: 'button', onclick: openDeleteAccount }, icon('trash'), t('ui.settings.deleteAccount')))]
           : [el('p', { text: t('ui.settings.guestNote') }),
             el('button', { class: 'btn btn-primary btn-sm', type: 'button', onclick: function () { closeAllModals(); openAuth('login'); } }, t('ui.account.login'))]));
     openModal(content, 'settingsTitle');
@@ -1292,6 +1368,34 @@
     } else {
       render();
     }
+  }
+  function openDeleteAccount() {
+    var pwd = el('input', { class: 'input', type: 'password', id: 'deletePwd', autocomplete: 'current-password', maxlength: '72' });
+    var err = el('p', { class: 'form-error', role: 'alert' });
+    var btn = el('button', { class: 'btn btn-danger', type: 'submit' }, icon('trash'), t('ui.settings.deleteBtn'));
+    var form = el('form', { novalidate: true },
+      el('div', { class: 'field' }, el('label', { for: 'deletePwd', text: t('ui.settings.deletePwd') }), pwd), err,
+      el('div', { class: 'quiz-actions' }, btn,
+        el('button', { class: 'btn btn-ghost', type: 'button', onclick: function () { closeAllModals(); } }, t('ui.common.cancel'))));
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      err.textContent = '';
+      if (!pwd.value) { pwd.focus(); return; }
+      btn.disabled = true;
+      api('/me', { method: 'DELETE', body: { password: pwd.value } })
+        .then(function () {
+          state.user = null; state.aiHistory = [];
+          closeAllModals();
+          toast(t('ui.settings.deleted'), 'info');
+          render();
+        })
+        .catch(function (e2) { err.textContent = errorText(e2.code); btn.disabled = false; pwd.select(); });
+    });
+    closeAllModals();
+    openModal(el('div', null,
+      el('h2', { id: 'deleteTitle', text: t('ui.settings.deleteTitle') }),
+      el('p', { class: 'sub', text: t('ui.settings.deleteText') }), form), 'deleteTitle');
+    setTimeout(function () { pwd.focus(); }, 30);
   }
   function logout() {
     api('/auth/logout', { method: 'POST', body: {} }).catch(function () { /* se cierra igualmente en local */ }).then(function () {

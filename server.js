@@ -1,6 +1,6 @@
 'use strict';
 /**
- * NEXORA — servidor de producción
+ * Monibas Capital — servidor de producción
  * -------------------------------------------------
  * Sirve la web (carpeta /public) y la API desde el mismo origen:
  *   - Autenticación: registro, inicio y cierre de sesión (bcrypt + JWT en cookie httpOnly, SameSite=Strict)
@@ -37,7 +37,10 @@ const COOKIE_SECURE = process.env.COOKIE_SECURE ? process.env.COOKIE_SECURE === 
 const COOKIE_NAME = COOKIE_SECURE ? '__Host-session' : 'session';
 const TRUST_PROXY = process.env.TRUST_PROXY || (IS_PROD ? '1' : '0');
 const ALLOWED_ORIGINS = splitList(process.env.ALLOWED_ORIGINS);
-const ADMIN_EMAILS = new Set(splitList(process.env.ADMIN_EMAILS).map(e => e.toLowerCase()));
+// Los administradores se guardan en la base de datos (npm run make-admin). Antes se definían por correo en
+// ADMIN_EMAILS, pero como el registro no verifica el correo, cualquiera podía registrarse con ese correo y ser admin.
+if (process.env.ADMIN_EMAILS) console.warn('[seguridad] ADMIN_EMAILS ya no se usa. Nombra administradores con: npm run make-admin -- correo@ejemplo.com');
+const AI_DAILY_LIMIT = Math.max(0, parseInt(process.env.AI_DAILY_LIMIT, 10) || 500);
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '';
 const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-5';
 const NEWS_FEEDS = splitList(process.env.NEWS_FEEDS ||
@@ -99,6 +102,7 @@ function addColumn(table, column, definition) {
 addColumn('users', 'lang', "TEXT NOT NULL DEFAULT 'es'");
 addColumn('users', 'progress', "TEXT NOT NULL DEFAULT '{}'");
 addColumn('users', 'token_version', 'INTEGER NOT NULL DEFAULT 0');
+addColumn('users', 'is_admin', 'INTEGER NOT NULL DEFAULT 0');
 
 const q = {
   userById: db.prepare('SELECT * FROM users WHERE id = ?'),
@@ -123,9 +127,19 @@ const q = {
   replyById: db.prepare('SELECT id, user_id FROM replies WHERE id = ?'),
   deleteRepliesOfPost: db.prepare('DELETE FROM replies WHERE post_id = ?'),
   deletePost: db.prepare('DELETE FROM posts WHERE id = ?'),
-  deleteReply: db.prepare('DELETE FROM replies WHERE id = ?')
+  deleteReply: db.prepare('DELETE FROM replies WHERE id = ?'),
+  deleteRepliesByUser: db.prepare('DELETE FROM replies WHERE user_id = ?'),
+  deleteRepliesOnUserPosts: db.prepare('DELETE FROM replies WHERE post_id IN (SELECT id FROM posts WHERE user_id = ?)'),
+  deletePostsByUser: db.prepare('DELETE FROM posts WHERE user_id = ?'),
+  deleteUser: db.prepare('DELETE FROM users WHERE id = ?')
 };
 const deletePostTx = db.transaction(id => { q.deleteRepliesOfPost.run(id); q.deletePost.run(id); });
+const deleteAccountTx = db.transaction(id => {
+  q.deleteRepliesByUser.run(id);
+  q.deleteRepliesOnUserPosts.run(id);
+  q.deletePostsByUser.run(id);
+  q.deleteUser.run(id);
+});
 
 /* ------------------------------------------------------------------ */
 /* Validación                                                          */
@@ -136,12 +150,15 @@ const LEVEL_COUNT = 8;
 const USERNAME_RE = /^[\p{L}\p{N}_.-]{3,30}$/u;
 const EMAIL_RE = /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,}$/;
 const MAX_POST = 600;
+const RESERVED_NAMES = /^(admin|administrador|administrator|administrateur|moderador|moderator|moderateur|mod|soporte|support|staff|equipo|team|sistema|system|root|oficial|official|monibas.*|monibascapital.*)$/i;
 const DUMMY_HASH = bcrypt.hashSync(crypto.randomBytes(16).toString('hex'), 12);
 
 function cleanText(value, max) {
   if (typeof value !== 'string') return '';
   return value
-    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
+    .normalize('NFC')
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F]/g, '')
+    .replace(/[\u200B-\u200F\u202A-\u202E\u2060-\u2064\u2066-\u206F\uFEFF]/g, '')
     .replace(/\r\n?/g, '\n')
     .replace(/\n{3,}/g, '\n\n')
     .trim()
@@ -178,7 +195,7 @@ function sanitizeProgress(p) {
 /* ------------------------------------------------------------------ */
 /* Sesión                                                              */
 /* ------------------------------------------------------------------ */
-function isAdmin(user) { return !!user && ADMIN_EMAILS.has(user.email); }
+function isAdmin(user) { return !!user && user.is_admin === 1; }
 function publicUser(user) {
   return { id: user.id, username: user.username, lang: user.lang, isAdmin: isAdmin(user) };
 }
@@ -261,7 +278,8 @@ app.use('/api', (req, res, next) => {
 });
 
 const limitHandler = (req, res) => res.status(429).json({ error: 'TOO_MANY_REQUESTS' });
-const apiLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 600, standardHeaders: true, legacyHeaders: false, handler: limitHandler });
+// Límite general holgado: en universidades u oficinas muchas personas comparten IP. Los límites estrictos van por ruta.
+const apiLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 1500, standardHeaders: true, legacyHeaders: false, handler: limitHandler });
 const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20, standardHeaders: true, legacyHeaders: false, handler: limitHandler });
 const writeLimiter = rateLimit({ windowMs: 60 * 1000, max: 12, standardHeaders: true, legacyHeaders: false, handler: limitHandler });
 const aiLimiter = rateLimit({
@@ -269,16 +287,32 @@ const aiLimiter = rateLimit({
   keyGenerator: req => 'u' + (req.user ? req.user.id : '0')
 });
 app.use('/api', apiLimiter);
+app.use('/api', (req, res, next) => { if (req.path !== '/news') res.set('Cache-Control', 'no-store'); next(); });
+
+// Fuerza bruta contra una cuenta concreta desde muchas IP: 10 intentos fallidos por correo cada 15 minutos
+const loginAccountLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, max: 10, standardHeaders: false, legacyHeaders: false, handler: limitHandler,
+  skipSuccessfulRequests: true,
+  keyGenerator: req => 'acct:' + crypto.createHash('sha256').update(String((req.body && req.body.email) || '').trim().toLowerCase()).digest('hex')
+});
+
+// Tope global diario del consultor IA (protege la factura aunque alguien cree muchas cuentas)
+let aiDay = { day: '', count: 0 };
+function aiBudgetAvailable() {
+  const today = new Date().toISOString().slice(0, 10);
+  if (aiDay.day !== today) aiDay = { day: today, count: 0 };
+  return AI_DAILY_LIMIT === 0 || aiDay.count < AI_DAILY_LIMIT;
+}
 
 /* ---------------- Autenticación ---------------- */
 app.post('/api/auth/register', authLimiter, async (req, res, next) => {
   try {
-    const username = cleanText(req.body.username, 40);
+    const username = cleanText(req.body.username, 40).normalize('NFKC');
     const email = cleanText(req.body.email, 254).toLowerCase();
     const password = typeof req.body.password === 'string' ? req.body.password : '';
     const lang = LANGS.has(req.body.lang) ? req.body.lang : 'es';
 
-    if (!USERNAME_RE.test(username)) return res.status(400).json({ error: 'INVALID_USERNAME' });
+    if (!USERNAME_RE.test(username) || RESERVED_NAMES.test(username.replace(/[_.-]/g, ''))) return res.status(400).json({ error: 'INVALID_USERNAME' });
     if (!EMAIL_RE.test(email)) return res.status(400).json({ error: 'INVALID_EMAIL' });
     const pwBytes = Buffer.byteLength(password, 'utf8');
     if (password.length < 8 || pwBytes > 72) return res.status(400).json({ error: 'WEAK_PASSWORD' });
@@ -295,7 +329,7 @@ app.post('/api/auth/register', authLimiter, async (req, res, next) => {
   }
 });
 
-app.post('/api/auth/login', authLimiter, async (req, res, next) => {
+app.post('/api/auth/login', authLimiter, loginAccountLimiter, async (req, res, next) => {
   try {
     const email = cleanText(req.body.email, 254).toLowerCase();
     const password = typeof req.body.password === 'string' ? req.body.password.slice(0, 200) : '';
@@ -331,6 +365,17 @@ app.put('/api/me/progress', requireAuth, writeLimiter, (req, res) => {
   const progress = sanitizeProgress(req.body);
   q.setProgress.run(JSON.stringify(progress), req.user.id);
   res.json({ progress });
+});
+
+app.delete('/api/me', requireAuth, authLimiter, async (req, res, next) => {
+  try {
+    const password = typeof req.body.password === 'string' ? req.body.password.slice(0, 200) : '';
+    const ok = await bcrypt.compare(password, req.user.password_hash);
+    if (!ok) return res.status(401).json({ error: 'INVALID_CREDENTIALS' });
+    deleteAccountTx(req.user.id);
+    clearSession(res);
+    res.json({ ok: true });
+  } catch (err) { next(err); }
 });
 
 /* ---------------- Foro ---------------- */
@@ -393,7 +438,7 @@ app.delete('/api/replies/:replyId', requireAuth, writeLimiter, (req, res) => {
 const LANG_NAMES = { es: 'Spanish (Spain)', en: 'English', fr: 'French', de: 'German' };
 function aiSystemPrompt(lang) {
   return [
-    'You are the "AI Consultant" inside "NEXORA", an educational website that teaches people to invest from zero.',
+    'You are the "AI Consultant" inside "Monibas Capital", an educational website that teaches people to invest from zero.',
     `Always answer in ${LANG_NAMES[lang]}, in a clear, friendly tone without unnecessary jargon; briefly explain any technical term you use.`,
     'Adapt the depth to a beginner unless the question clearly shows an advanced level; with advanced users, be precise and go deeper.',
     'Whenever you discuss an investment decision, product or strategy, ALWAYS present both arguments in favour and against (or the risks). Never give only one side.',
@@ -406,6 +451,7 @@ function aiSystemPrompt(lang) {
 
 app.post('/api/ai', requireAuth, aiLimiter, async (req, res, next) => {
   if (!ANTHROPIC_API_KEY) return res.status(503).json({ error: 'AI_DISABLED' });
+  if (!aiBudgetAvailable()) return res.status(429).json({ error: 'TOO_MANY_REQUESTS' });
   const lang = LANGS.has(req.body.lang) ? req.body.lang : 'es';
   const raw = Array.isArray(req.body.messages) ? req.body.messages.slice(-12) : [];
   const messages = [];
@@ -432,6 +478,7 @@ app.post('/api/ai', requireAuth, aiLimiter, async (req, res, next) => {
       console.error('[ia] respuesta del proveedor:', upstream.status);
       return res.status(502).json({ error: 'AI_ERROR' });
     }
+    aiDay.count++;
     const data = await upstream.json();
     const reply = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n').trim();
     if (!reply) return res.status(502).json({ error: 'AI_ERROR' });
@@ -445,7 +492,7 @@ app.post('/api/ai', requireAuth, aiLimiter, async (req, res, next) => {
 });
 
 /* ---------------- Titulares en directo (RSS) ---------------- */
-const rss = new Parser({ timeout: 8000, headers: { 'User-Agent': 'CuadernoDelInversor/1.0 (lector de titulares)' } });
+const rss = new Parser({ timeout: 8000, headers: { 'User-Agent': 'MonibasCapital/1.0 (lector de titulares)' } });
 const NEWS_TTL = 15 * 60 * 1000;
 let newsCache = { at: 0, items: [] };
 let newsInFlight = null;
@@ -474,6 +521,8 @@ async function refreshNews() {
     }
   }
   items.sort((a, b) => (b.date || 0) - (a.date || 0));
+  const seen = new Set();
+  for (let k = items.length - 1; k >= 0; k--) { if (seen.has(items[k].link)) items.splice(k, 1); else seen.add(items[k].link); } // sin duplicados entre medios
   if (items.length) newsCache = { at: Date.now(), items: items.slice(0, 24) };
   return newsCache;
 }
@@ -516,7 +565,7 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 });
 
 const server = app.listen(PORT, () => {
-  console.log(`NEXORA en http://localhost:${PORT} (${IS_PROD ? 'producción' : 'desarrollo'})`);
+  console.log(`Monibas Capital en http://localhost:${PORT} (${IS_PROD ? 'producción' : 'desarrollo'})`);
   if (!ANTHROPIC_API_KEY) console.log('[ia] ANTHROPIC_API_KEY no configurada: el consultor IA mostrará que no está disponible.');
 });
 

@@ -3,10 +3,10 @@ window.LOCALES.en = {
   meta: { name: "English", short: "EN", htmlLang: "en", locale: "en-GB" },
 
   ui: {
-    brand: "NEXORA",
-    brandTag: "Learn to invest from scratch",
+    brand: "Monibas Capital",
+    brandTag: "Invest with your head, not your hunches.",
     skip: "Skip to content",
-    nav: { label: "Main navigation", learn: "Learn", simulator: "Simulator", forum: "Forum", ai: "AI Consultant", resources: "News", menu: "Open menu", closeMenu: "Close menu" },
+    nav: { label: "Main navigation", learn: "Learn", simulator: "Simulators", forum: "Forum", ai: "AI Consultant", resources: "News", menu: "Open menu", closeMenu: "Close menu" },
     account: { login: "Log in", logout: "Log out", settings: "Settings" },
     common: { close: "Close", cancel: "Cancel", confirm: "Confirm", retry: "Try again" },
 
@@ -45,7 +45,7 @@ window.LOCALES.en = {
     tools: {
       title: "Tools to practise with",
       sub: "Use them at any time, without waiting to finish the path.",
-      simulator: { h: "Simulator", p: "See how much your savings could grow with regular contributions and the passage of time." },
+      simulator: { h: "Simulators", p: "Compound interest, the cost of fees, your portfolio, position size and the “up or down?” challenge." },
       forum: { h: "Forum", p: "Ask questions, share your experience and learn from other people who are also starting out." },
       ai: { h: "AI Consultant", p: "Get clear answers to specific questions, always with the pros and cons." },
       resources: { h: "News and sources", p: "Up-to-date financial headlines and the official sources worth knowing." }
@@ -67,6 +67,8 @@ window.LOCALES.en = {
       prev: "Previous level",
       next: "Next level",
       nextLocked: "Next level (locked)",
+      swipeHint: "Swipe to see the full chart",
+      riskLabel: "Risk level: {n} of 5",
       pagerLabel: "Level navigation",
       locked: {
         title: "This level is still locked",
@@ -148,7 +150,7 @@ window.LOCALES.en = {
       sub: "Get clear explanations to your investing questions. You'll always see arguments for and against.",
       panelTitle: "Conversation",
       panelSub: "Ask in your own words; it adapts to your level.",
-      welcome: "Hi! I'm the NEXORA consultant. Ask me anything about investing: concepts, products, strategies or questions about the levels. I'll always give you the pros and cons, with no personalised recommendations.",
+      welcome: "Hi! I'm the Monibas Capital consultant. Ask me anything about investing: concepts, products, strategies or questions about the levels. I'll always give you the pros and cons, with no personalised recommendations.",
       needLogin: "Log in to use the AI consultant. This helps us prevent misuse of the service.",
       placeholder: "For example: what's the difference between an ETF and an index fund?",
       inputLabel: "Your question for the consultant",
@@ -188,6 +190,12 @@ window.LOCALES.en = {
       account: "Account",
       loggedAs: "Logged in as {name}",
       syncNote: "Your language and progress are saved to your account and synced across devices.",
+      deleteAccount: "Delete my account",
+      deleteTitle: "Delete your account",
+      deleteText: "Your account, your progress and all your forum posts and replies will be deleted. This cannot be undone.",
+      deletePwd: "Enter your password to confirm",
+      deleteBtn: "Delete permanently",
+      deleted: "Your account has been deleted",
       guestNote: "Log in to save your progress and language to your account and use them on any device."
     },
     auth: {
@@ -208,7 +216,174 @@ window.LOCALES.en = {
       welcome: "Hi, {name}!",
       loggedOut: "You've logged out"
     },
+    heroChart: {
+      "label": "Interactive example candlestick chart",
+      "controls": "Chart options",
+      "candles": "Candles",
+      "line": "Line",
+      "ma": "Moving average (10)",
+      "volume": "Volume",
+      "levels": "Support and resistance",
+      "hint": "Hover over or tap a candle to see what it tells you. With a keyboard, use the arrow keys.",
+      "session": "Session {n}",
+      "change": "Change",
+      "volumeLbl": "Volume",
+      "aboveMa": "It closes above its moving average: the underlying trend is up.",
+      "belowMa": "It closes below its moving average: the underlying trend is weak.",
+      "caveat": "No pattern predicts the future on its own: always check it against the context.",
+      "note": "Illustrative data: it doesn't represent any real security.",
+      "cta": "Think you can guess the next candle?",
+      "ctaBtn": "Take the challenge",
+      "patterns": {
+        "bigBull": {
+          "h": "Strong bullish candle",
+          "p": "Long green body: buyers dominated the whole session. If it comes with high volume, it's more credible."
+        },
+        "bigBear": {
+          "h": "Strong bearish candle",
+          "p": "Long red body: sellers took control. With high volume it usually reflects genuine selling pressure."
+        },
+        "bull": {
+          "h": "Bullish candle",
+          "p": "It closed above its open: buyers won, but not by much."
+        },
+        "bear": {
+          "h": "Bearish candle",
+          "p": "It closed below its open: sellers won, but not by much."
+        },
+        "doji": {
+          "h": "Doji",
+          "p": "Open and close almost the same: indecision. After a long move it can hint at a pause, though it's never a guarantee."
+        },
+        "hammer": {
+          "h": "Hammer",
+          "p": "Long lower wick: the price fell and buyers pushed it back up. After a decline, it's read as a possible rejection of lower prices."
+        },
+        "star": {
+          "h": "Shooting star",
+          "p": "Long upper wick: the price rose and sellers pushed it back down. After a rise, it can signal exhaustion."
+        }
+      }
+    },
+    lab: {
+      "title": "Simulators",
+      "sub": "Practise with interactive tools, with no real money and no risk. They all run on your device.",
+      "tabsLabel": "Available simulators",
+      "tabs": {
+        "compound": "Compound interest",
+        "challenge": "Up or down?",
+        "fees": "Fees",
+        "portfolio": "Your portfolio",
+        "position": "Position size"
+      },
+      "practice": "Put it into practice",
+      "practiceGo": "Open the simulator",
+      "challenge": {
+        "h": "Challenge: up or down?",
+        "p": "Look at the chart and bet on the direction of the next 5 sessions. Can your gut beat chance?",
+        "intro": "You'll see 10 candlestick charts. For each one, decide whether the price will be higher or lower than now in 5 sessions' time.",
+        "start": "Start the challenge",
+        "up": "It'll go up",
+        "down": "It'll go down",
+        "round": "Chart {n} of {total}",
+        "score": "Correct: {n}",
+        "now": "Now",
+        "rightUp": "Correct! It rose {p}.",
+        "rightDown": "Correct! It fell {p}.",
+        "wrongUp": "Wrong: it rose {p}.",
+        "wrongDown": "Wrong: it fell {p}.",
+        "next": "Next chart",
+        "seeResult": "See the result",
+        "again": "Try again",
+        "doneTitle": "Result: {n} out of {total} correct",
+        "verdictMid": "That's exactly what you'd expect from tossing a coin.",
+        "verdictHigh": "Nice streak! But bear in mind that getting 8 or more out of 10 right by pure luck happens to 1 in 18 people.",
+        "verdictLow": "Bad streak… though it doesn't mean anything either: getting 8 or more out of 10 wrong by pure chance happens to 1 in 18 people.",
+        "reveal": "The trick: every one of these charts was generated at random. Even so, you probably saw trends, support levels or patterns.",
+        "lesson": "The brain looks for patterns even where there are none. That's why sensible investors follow a plan, not their hunches.",
+        "chartLabel": "Challenge chart"
+      },
+      "fees": {
+        "h": "The cost of fees",
+        "p": "Compare the same savings with a low fee and a high one, and see how much the difference takes over the years.",
+        "initial": "Initial capital",
+        "monthly": "Monthly contribution",
+        "years": "Years",
+        "gross": "Annual return before fees",
+        "feeA": "Fund A annual fee",
+        "feeB": "Fund B annual fee",
+        "hintA": "Typical of an index fund",
+        "hintB": "Typical of an actively managed fund",
+        "finalA": "Final value with A",
+        "finalB": "Final value with B",
+        "diff": "Difference",
+        "summary": "With fund B you'd end up with {amount} less: {p} less wealth for paying {d} percentage points more a year.",
+        "legendA": "Fund A",
+        "legendB": "Fund B",
+        "chartLabel": "Growth of your savings with each fee",
+        "note": "Calculated with monthly compounding; the fee is deducted from the return every month. Taxes and inflation are not included."
+      },
+      "portfolio": {
+        "h": "Build your portfolio",
+        "p": "Split your money between assets and see how the expected return and the risk change.",
+        "equity": "Global equities",
+        "bonds": "Bonds",
+        "cash": "Cash",
+        "gold": "Gold",
+        "autoHint": "When you move one control, the others adjust so the total is always 100%.",
+        "presetsLabel": "Example portfolios",
+        "presets": [
+          "Conservative",
+          "Balanced",
+          "Dynamic",
+          "All equities"
+        ],
+        "expReturn": "Expected annual return",
+        "vol": "Typical swing (volatility)",
+        "badYear": "A bad year (roughly 1 in 40)",
+        "badYearNote": "With €10,000 invested, in a year like that you could be left with about {amount}.",
+        "riskLevel": "Risk level",
+        "riskNames": [
+          "Very low",
+          "Low",
+          "Medium",
+          "High",
+          "Very high"
+        ],
+        "rangeLabel": "Possible results in one year",
+        "rangeBad": "Bad year",
+        "rangeGood": "Good year",
+        "rangeExp": "Expected",
+        "tails": "Bear in mind that in reality extreme falls happen more often than this model predicts. In 2008, global equities fell by around 40% in a single year.",
+        "assumptions": "Illustrative long-term assumptions (not a forecast): equities 7% a year with 16% volatility; bonds 3% and 6%; cash 2% and 1%; gold 4% and 15%.",
+        "note": "This isn't a recommendation: the right portfolio depends on your time horizon and how much of a fall you can stomach without selling."
+      },
+      "position": {
+        "h": "Position size",
+        "p": "The calculator traders use: how many shares to buy so you never risk more than you've decided.",
+        "capital": "Account capital",
+        "risk": "Maximum risk per trade",
+        "entry": "Entry price",
+        "stop": "Stop-loss",
+        "target": "Target (take-profit)",
+        "shares": "Shares to buy",
+        "invest": "Position value",
+        "riskAmt": "Maximum loss if the stop is hit",
+        "rr": "Reward-to-risk ratio",
+        "rrVal": "1 : {n}",
+        "breakevenNote": "With this ratio you need to be right on at least {p} of your trades to avoid losing money (before fees).",
+        "ofCapital": "{p} of your capital",
+        "errStop": "For a purchase, the stop-loss must be below the entry price.",
+        "errTarget": "The target must be above the entry price.",
+        "warnSize": "The position exceeds your capital: it would only be possible with leverage, which also multiplies losses.",
+        "warnRisk": "Risking more than 2% per trade is aggressive: many professional traders limit themselves to 0.5–1%.",
+        "note": "Example for purchases (long positions). A stop-loss doesn't guarantee the exit price: if the market opens with a gap, the loss can be larger.",
+        "chartLabel": "Trade levels"
+      }
+    },
     footer: {
+      explore: "Explore",
+      rights: "All rights reserved.",
       disclaimer: "Educational content, not financial advice. Investing involves risk, including the loss of capital. Past performance does not guarantee future results.",
       sources: "Content based on guides from financial regulators and well-known investor communities. Last reviewed: September 2026.",
       privacy: "We only use one technical cookie to keep you logged in. No ads, no trackers."
@@ -511,7 +686,7 @@ window.LOCALES.en = {
         ] },
         { t: "p", h: "Listed real estate (REITs)", html: "These are companies that own and manage property (offices, logistics centres, rental housing) and pay out much of their profit as dividends. They give you exposure to real estate without buying a flat, but they suffer when interest rates rise." },
         { t: "p", h: "Crypto-assets, with great caution", html: "These are highly volatile digital assets with more limited investor protection than traditional products. If you decide to invest, keep it to a small part of your wealth and only use money you can afford to lose entirely." },
-        { t: "table", h: "Quick comparison", head: ["Vehicle", "Typical risk", "Effort", "Suitable for"], rows: [
+        { t: "table", risk: [1, 2, 3, 4, 4, 5], h: "Quick comparison", head: ["Vehicle", "Typical risk", "Effort", "Suitable for"], rows: [
           ["Deposits and money market", "Very low", "Minimal", "Emergency fund and the short term"],
           ["Bonds", "Low to medium", "Low", "Stabilising a portfolio"],
           ["Global index fund or ETF", "Medium", "Low", "The core of almost any long-term portfolio"],

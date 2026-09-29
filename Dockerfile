@@ -2,7 +2,8 @@ FROM node:20-slim
 ENV NODE_ENV=production
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --omit=dev && npm cache clean --force
+# Con package-lock.json se instalan exactamente las versiones revisadas (npm ci)
+RUN if [ -f package-lock.json ]; then npm ci --omit=dev; else npm install --omit=dev; fi && npm cache clean --force
 COPY . .
 RUN mkdir -p /app/data && chown -R node:node /app
 USER node

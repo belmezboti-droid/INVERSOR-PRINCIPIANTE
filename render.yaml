@@ -3,7 +3,7 @@ services:
     name: cuaderno-del-inversor
     runtime: node
     plan: starter
-    buildCommand: npm install --omit=dev
+    buildCommand: if [ -f package-lock.json ]; then npm ci --omit=dev; else npm install --omit=dev; fi
     startCommand: node server.js
     healthCheckPath: /api/health
     envVars:
@@ -17,8 +17,8 @@ services:
         value: "1"
       - key: ANTHROPIC_API_KEY
         sync: false
-      - key: ADMIN_EMAILS
-        sync: false
+      - key: AI_DAILY_LIMIT
+        value: "500"
     disk:
       name: datos
       mountPath: /var/data

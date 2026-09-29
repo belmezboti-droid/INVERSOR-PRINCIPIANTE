@@ -28,7 +28,7 @@ for (const l of LANGS) {
 const L = sandbox.window.LOCALES;
 
 // Textos que pueden coincidir legítimamente con el español (nombres propios, siglas, cifras…)
-const SAME_OK = /^(ETF|PER|PEG|ROE|RSI|TER|EBITDA|MiFID|CNMV|ISA|PEA|DCA|FOMO|Broker|Spread|Stop-loss|Take-profit|REIT|Blue chip|Benchmark|Tracking error|Bogleheads.*|Rankia|Investing\.com|Reuters|Bloomberg|ES|EN|FR|DE|Value investing|Growth|Disponible|\{n\} min|\{n\}\/600|[\d\s.,%€≈–-]+|.*https?:\/\/.*)$/i;
+const SAME_OK = /^(ETF|PER|PEG|ROE|RSI|TER|EBITDA|MiFID|CNMV|ISA|PEA|DCA|FOMO|Broker|Spread|Stop-loss|Take-profit|REIT|Blue chip|Benchmark|Tracking error|Bogleheads.*|Rankia|Investing\.com|Reuters|Bloomberg|ES|EN|FR|DE|Monibas Capital|Doji|Volumen|1 : \{n\}|Value investing|Growth|Disponible|\{n\} min|\{n\}\/600|[\d\s.,%€≈–-]+|.*https?:\/\/.*)$/i;
 
 function placeholders(s) {
   return (s.match(/\{\w+\}/g) || []).sort().join(',');
@@ -106,7 +106,7 @@ for (const lang of LANGS.slice(1)) {
 }
 
 // Todas las claves ui.* que usa app.js existen
-const appSrc = fs.readFileSync(path.join(ROOT, 'public', 'js', 'app.js'), 'utf8');
+const appSrc = ['app.js', 'interactive.js'].map(f => fs.readFileSync(path.join(ROOT, 'public', 'js', f), 'utf8')).join('\n');
 const used = new Set((appSrc.match(/t\('((?:ui|errors|topics)\.[\w.]+)'/g) || []).map(m => m.slice(3, -1)));
 const get = (o, p) => p.split('.').reduce((a, k) => (a && a[k] !== undefined ? a[k] : undefined), o);
 for (const key of used) {

@@ -1,4 +1,4 @@
-/* Gráficos SVG propios de NEXORA.
+/* Gráficos SVG propios de Monibas Capital.
    Cada función recibe las etiquetas traducidas del idioma activo y devuelve
    { svg, legend } donde svg es una cadena y legend una lista opcional.
    Todas las etiquetas se escapan antes de insertarse. */
@@ -109,13 +109,14 @@
     out += '<line x1="' + X0 + '" y1="' + Y0 + '" x2="' + X0 + '" y2="' + (Y0 - Hd) + '" class="chart-axis"/>';
     out += text(X0 + Wd, Y0 + 24, L.x, 'chart-label', 'end');
     out += '<text x="22" y="' + (Y0 - Hd) + '" class="chart-label" transform="rotate(-90 22 ' + (Y0 - Hd) + ')" text-anchor="end">' + esc(L.y) + '</text>';
-    out += text(X0 + Wd, 26, L.note, 'chart-label', 'end');
-    var pos = [[0.07, 0.1, 16], [0.24, 0.28, 20], [0.47, 0.55, 26], [0.72, 0.7, 24], [0.62, 0.42, 22], [0.9, 0.84, 30]];
+    out += text(X0 + 12, 26, L.note, 'chart-label', 'start');
+    // [x, y, radio, nivel de riesgo 1-5]: el color va de verde (bajo) a rojo (muy alto)
+    var pos = [[0.07, 0.1, 16, 1], [0.24, 0.28, 20, 2], [0.47, 0.55, 26, 3], [0.72, 0.7, 24, 4], [0.62, 0.42, 22, 4], [0.9, 0.84, 30, 5]];
     pos.forEach(function (p, i) {
       var cx = X0 + p[0] * Wd, cy = Y0 - p[1] * Hd;
-      out += '<circle cx="' + cx + '" cy="' + cy + '" r="' + p[2] + '" class="chart-bubble"/>';
-      var right = p[0] < 0.8;
-      out += text(right ? cx + p[2] + 6 : cx - p[2] - 6, cy + 4, L.items[i], 'chart-label-strong', right ? 'start' : 'end');
+      out += '<circle cx="' + cx + '" cy="' + cy + '" r="' + p[2] + '" class="chart-bubble risk-' + p[3] + '"/>';
+      if (p[0] > 0.8) out += text(cx, cy - p[2] - 10, L.items[i], 'chart-label-strong', 'middle');
+      else out += text(cx + p[2] + 8, cy + 5, L.items[i], 'chart-label-strong', 'start');
     });
     return { svg: svg(640, 320, out, L.x + ' / ' + L.y) };
   };
